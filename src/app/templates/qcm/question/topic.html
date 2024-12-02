@@ -1,0 +1,53 @@
+<div id="question-topic">
+  <form action="{% url 'index' %}" method="get">
+    {% csrf_token %}
+    <div class="multiselect">
+      <h2>Choisis ton thème</h2>
+      {{ topic_form }}
+      <input type="submit" value="Changer le sujet">
+    </div>
+  </form>
+  <form action="{% url 'report' %}" method="get">
+    {% csrf_token %}
+    {{ form.question }}
+    <input type="submit" formtarget="_blank" value="Signaler une erreur sur la question">
+  </form>
+  Sujets actuellements sélectionnés :
+  <ol class="hidden">
+    {% for topic in topic_list %}
+      <li>{{ topic }}</li>
+    {% endfor %}
+  </ol>
+
+</div>
+
+<style>
+
+    #question-topic .topic-button {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+    }
+
+    #question-topic .topic-button input {
+        display: none;
+    }
+
+    #question-topic .topic-button label {
+        background-color: #ccc;
+        color: black;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        transition: background-color 0.3s;
+        position: relative;
+    }
+
+    #question-topic .topic-button input:checked + label {
+        background-color: #4CAF50;
+    }
+
+</style>

@@ -1,0 +1,133 @@
+
+<div id="question-mcq">
+    <h2>Question</h2>
+    <p>{{ question.question }}</p>
+
+    {% if question.image_path %}
+        {% load static %}
+        <img src="{% static question.image_path %}" alt="My image">
+    {% endif %}
+    <div id="question-section">
+        <!-- Dynamic content will be inserted here -->
+    </div>
+
+    <form action="{% url 'index' %}" method="get">
+        {% csrf_token %}
+        {% for topic in topic_list %}
+            <input type="hidden" name="topic_list" value="{{ topic }}">
+        {% endfor %}
+        <input type="submit" value="Nouvelle question">
+    </form>
+
+</div>
+
+<style>
+
+    #question-mcq {
+        text-align: center;
+        position: relative;
+    }
+   
+    #question-mcq .correct::after {
+        content: '✔';
+        color: green;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+    }
+    #question-mcq .wrong::after {
+        content: '✖';
+        color: red;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+    }
+
+    #question-mcq .option {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+    }
+    #question-mcq .option input {
+        display: none;
+    }
+    #question-mcq .option label {
+        background-color: #ccc;
+        color: black;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        transition: background-color 0.3s;
+        position: relative;
+    }
+    #question-mcq .option input:checked + label {
+        background-color: #4CAF50;
+    }
+    #question-mcq button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #question-mcq button:hover {
+        background-color: #45a049;
+    }
+
+</style>
+
+<script data-question="{{ json_question }}">
+    const data = document.currentScript.dataset;
+    const questionData = JSON.parse(data.question);
+    const questionSection = document.getElementById('question-section');
+
+    function renderQuestion() {
+        const questionHTML = `
+            <form id="question-form">
+                ${questionData.answers.map((option, index) => `
+                    <div class="option">
+                        <input type="checkbox" id="option-${index}" name="option" value="${index}">
+                        <label for="option-${index}">${option.text}</label>
+                    </div>
+                `).join('')}
+                <button type="button" onclick="validateAnswers()">Valider</button>
+            </form>
+            <div id="message"></div>
+        `;
+        questionSection.innerHTML = questionHTML;
+    }
+
+    function validateAnswers() {
+        const form = document.getElementById('question-form');
+        const selectedOptions = Array.from(form.elements['option'])
+            .filter(input => input.checked)
+            .map(input => parseInt(input.value));
+
+        let isCorrect = true;
+        questionData.answers.forEach((option, index) => {
+            const label = form.querySelector(`label[for="option-${index}"]`);
+            if (option.is_true) {
+                label.classList.add('correct');
+                if (!selectedOptions.includes(index)) {
+                    isCorrect = false;
+                }
+            } else {
+                label.classList.add('wrong');
+                if (selectedOptions.includes(index)) {
+                    isCorrect = false;
+                }
+                
+            }
+        });
+
+        const message = document.getElementById('message');
+        message.textContent = isCorrect ? 'Félicitations! Vous avez trouvé les bonnes réponses.' : 'Désolé, veuillez réessayer.';
+    }
+
+    renderQuestion();
+</script>

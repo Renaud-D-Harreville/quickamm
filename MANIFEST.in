@@ -1,0 +1,3 @@
+include resources/toponymy/toponymy.json
+include resources/flora/flowers/*
+include resources/flora/flowers.json

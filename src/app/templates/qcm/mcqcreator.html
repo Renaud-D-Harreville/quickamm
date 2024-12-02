@@ -1,0 +1,9 @@
+{% extends "qcm/base.html" %}
+{% load static %}
+{%  block body %}
+<form action="{% url 'mcq_creator' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_div }}
+    <input type="submit" value="valider">
+</form>
+{% endblock %}

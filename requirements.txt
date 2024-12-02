@@ -1,0 +1,5 @@
+pydantic
+# pillow
+# opencv-python
+django
+numpy

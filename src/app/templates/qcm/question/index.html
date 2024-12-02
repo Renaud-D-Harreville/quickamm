@@ -1,0 +1,42 @@
+{% extends "qcm/base.html" %}
+{% load static %}
+{%  block body %}
+
+    <div class="row g-6 w-100 justify-content-center" id="question-index">
+        <div class="col-sm-4 section" id="questionBox">
+            {% include 'qcm/question/mcq.html' %}
+        </div>
+        <div class="col-sm-6 section" id="formBox">
+            {% include 'qcm/question/topic.html' %}
+        </div>
+    </div>
+</div>
+    <style>
+        #questionBox {
+        }
+    
+        #formBox {
+        }
+    
+        @media (max-width: 320px) {
+            .element {
+                width: 90%;
+            }
+        }
+        #question-index .section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+        }
+        #question-index img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+{%  endblock %}
+

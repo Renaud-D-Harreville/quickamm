@@ -1,0 +1,52 @@
+{% extends "qcm/base.html" %}
+{% load static %}
+{%  block body %}
+    
+    <h2>Vous pouvez posez votre question en mettant un post sur cette page facebook, en copiant le texte ci dessous ou en faisains un imprim écran de la question afin que nous puissions avoir le contexte :  </h2>
+    <p><a href="https://www.facebook.com/profile.php?id=61567106635981" target="_blank">Lien de la page facebook</a></p>
+    <p>Texte à copier / coller pour le contexte de la question (ou mettre un imprim écran): </p>
+    {{ json_dump }}
+
+{#    #}
+{#    <h2>(ancien formulaire pour le signalement d'une question)</h2>#}
+{#    #}
+{#    <h3>Question : </h3>#}
+{#    #}
+{#<p>{{ mcq.question }}</p>#}
+{#{% if mcq.image_path %}#}
+{#    {% load static %}#}
+{#    <img src="{% static mcq.image_path %}" alt="My image" class="rounded" width="200" height="200">#}
+{#{% endif %}#}
+{#    <h3>Réponses proposées : </h3>#}
+{#{%  for answer in mcq.answers %}#}
+{#    <p> {{ answer }}</p>#}
+{#{% endfor %}    #}
+{#    <h3>Index des bonnes réponses : </h3>#}
+{#    #}
+{#    {%  for i in mcq.correct_indexes %}#}
+{#    <p> {{ i }}</p>#}
+{#{% endfor %}#}
+{#{% if reports %}#}
+{#    {% for report in reports.reports %}#}
+{#        <div>#}
+{#            <p>réponses proposées lors de cette question :</p>#}
+{#            <p>{{ report.mcq_context.answers }}</p>#}
+{#            <p>index des bonnes réponses : </p>#}
+{#            <p>{{ report.mcq_context.correct_indexes }}</p>#}
+{#            <p>Problème soulevé</p>#}
+{#            <p>{{ report.report }}</p>#}
+{#            <p>Réponses au problème : </p>#}
+{#            <p>{{ report.answers }}</p>#}
+{#        </div>#}
+{#    {% endfor %}#}
+{#{% endif %}#}
+{##}
+{#            <form action="{% url 'report' %}" method="post">#}
+{#                {% csrf_token %}#}
+{#                <fieldset>#}
+{#                    {{ form }}#}
+{#                </fieldset>#}
+{#                <input type="submit" value="Signaler une erreur">#}
+{#            </form>#}
+{% endblock %}
+

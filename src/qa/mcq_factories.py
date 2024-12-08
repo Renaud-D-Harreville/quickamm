@@ -1,8 +1,8 @@
 import random
 
 from qa.fauna import AnimalsMCQFactory, get_animals
-from qa.flowers import FlowersMCQFactory, get_flowers
-from qa.toponymy import ToponymyMCQFactory, get_toponymy
+from qa.flora import FlowersMCQFactory, get_flowers
+from qa.toponymy import ToponymyToWordMCQFactory, WordToToponymyMCQFactory, get_toponymy
 from qa.mcq_models_db import MCQDBMCQFactory, get_questions_db
 from qa.mcq import AbstractMCQFactory
 from qa.models.models import MCQData
@@ -16,7 +16,8 @@ class AllQuestionsFactory:
 
     def __fullfill_questions_factories(self):
         self.questions_factories.append(MCQDBMCQFactory(get_questions_db()))
-        self.questions_factories.append(ToponymyMCQFactory(get_toponymy()))
+        self.questions_factories.append(ToponymyToWordMCQFactory(get_toponymy()))
+        self.questions_factories.append(WordToToponymyMCQFactory(get_toponymy()))
         self.questions_factories.append(AnimalsMCQFactory(get_animals()))
         self.questions_factories.append(FlowersMCQFactory(get_flowers()))
 

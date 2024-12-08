@@ -1,22 +1,8 @@
-from pydantic import BaseModel
 from qa.mcq import AbstractMCQFactory
-from qa import resource_dir_path
-import json
 from pathlib import Path
 import random
 from qa.models.models import MCQAnswer
-
-fauna_json_path = resource_dir_path / "fauna/fauna.json"
-
-
-class Animal(BaseModel):
-    name: str
-    images_name: list[str]
-    description: str = ""
-
-
-class Animals(BaseModel):
-    animals: list[Animal]
+from qa.fauna.models import Animal, Animals
 
 
 class AnimalsMCQFactory(AbstractMCQFactory):
@@ -68,15 +54,3 @@ class AnimalsMCQFactory(AbstractMCQFactory):
         answers = [self._to_mcq_answer(animal, False) for animal in self.animals.animals
                    if animal.name != surrounding_mcq_object.name]
         return answers
-
-
-def get_animals() -> Animals:
-    with open(fauna_json_path, "r", encoding='utf-8') as f:
-        json_data = json.loads(f.read())
-    return Animals(**json_data)
-
-
-def save_animals(animals: Animals):
-    json_model = animals.dict()
-    with open(fauna_json_path, "w") as f:
-        f.write(json.dumps(json_model, indent=2, ensure_ascii=False))

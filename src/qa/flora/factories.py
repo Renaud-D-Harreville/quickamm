@@ -1,23 +1,12 @@
-from pydantic import BaseModel
+
 from qa.mcq import AbstractMCQFactory
-from qa import resource_dir_path
-import json
 from pathlib import Path
 import random
 
 from qa.models.models import MCQAnswer
-
-flowers_json_path = resource_dir_path / "flora/flowers.json"
-
-
-class Flower(BaseModel):
-    name: str
-    images_name: list[str]
-    description: str = ""
+from qa.flora.models import Flowers, Flower
 
 
-class Flowers(BaseModel):
-    flowers: list[Flower]
 
 
 class FlowersMCQFactory(AbstractMCQFactory):
@@ -70,15 +59,3 @@ class FlowersMCQFactory(AbstractMCQFactory):
         answers = [self._to_mcq_answer(flower, False) for flower in self.flowers.flowers
                    if flower.name != surrounding_mcq_object.name]
         return answers
-
-
-def get_flowers() -> Flowers:
-    with open(flowers_json_path, "r", encoding='utf-8') as f:
-        json_data = json.loads(f.read())
-    return Flowers(**json_data)
-
-
-def save_flowers(flowers: Flowers):
-    json_model = flowers.dict()
-    with open(flowers_json_path, "w") as f:
-        f.write(json.dumps(json_model, indent=2, ensure_ascii=False))

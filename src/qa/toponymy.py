@@ -4,6 +4,8 @@ from qa.mcq import AbstractMCQFactory
 import json
 import random
 
+from qa.models.models import MCQAnswer
+
 toponymy_json_path = resource_dir_path / "toponymy/toponymy.json"
 
 
@@ -54,13 +56,26 @@ class ToponymyMCQFactory(AbstractMCQFactory):
     def get_random_surrounding_question_object(self, topic: str) -> ToponymyWord:
         return random.choice(self.toponymy.words)
 
-    def get_possible_true_answers(self, surrounding_mcq_object: ToponymyWord) -> list[str]:
-        return [surrounding_mcq_object.get_str_traduction()]
+    def _to_mcq_answer(self, toponymy_word: ToponymyWord, is_true: bool) -> MCQAnswer:
+        mcq_answer = MCQAnswer(
+            text=toponymy_word.get_str_traduction(),
+            is_true=is_true,
+            description=toponymy_word.list_as_str(toponymy_word.patois)
+        )
+        return mcq_answer
+
+    def get_answers(self, surrounding_mcq_object: ToponymyWord) -> list[MCQAnswer]:
+        correct_answer = self.get_true_answer(surrounding_mcq_object)
+        wrong_answers = self.get_possible_false_answers(surrounding_mcq_object)
+        answers = [correct_answer] + wrong_answers
+        return answers
+
+    def get_true_answer(self, surrounding_mcq_object: ToponymyWord) -> MCQAnswer:
+        return self._to_mcq_answer(surrounding_mcq_object, True)
 
     def get_possible_false_answers(self, surrounding_mcq_object: ToponymyWord) -> list[str]:
-        answers = [word.get_str_traduction() for word in self.toponymy.words]
-        for true_answer in self.get_possible_true_answers(surrounding_mcq_object):
-            answers.remove(true_answer)
+        answers = [self._to_mcq_answer(word, False) for word in self.toponymy.words
+                   if surrounding_mcq_object != word]
         return answers
 
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from qa.mcq import MultipleChoiceQuestion
+from qa.models.models import MCQData
 from qa.problems import DictOfQuestionReports, get_dict_problems, QuestionReport, QuestionReports
 from app.qcm.forms import ReportForm
 import json
@@ -12,13 +12,13 @@ class ReportView(View):
     template_name = 'qcm/report.html'
 
     @staticmethod
-    def mcq(data) -> MultipleChoiceQuestion:
+    def mcq(data) -> MCQData:
         question_dict = json.loads(data["question"])
-        question = MultipleChoiceQuestion(**question_dict)
+        question = MCQData(**question_dict)
         return question
 
     @staticmethod
-    def _get_form(mcq_reports: QuestionReports, mcq: MultipleChoiceQuestion) -> ReportForm:
+    def _get_form(mcq_reports: QuestionReports, mcq: MCQData) -> ReportForm:
         form = ReportForm()
         form.fields['mcq_reports'].initial = mcq_reports.model_dump() if mcq_reports else None
         form.fields['question'].initial = mcq.model_dump()
@@ -37,7 +37,7 @@ class ReportView(View):
         return render(request, self.template_name, context=context_dict)
 
     @staticmethod
-    def _handle_report(request, mcq: MultipleChoiceQuestion):
+    def _handle_report(request, mcq: MCQData):
         report = request.POST["report"]
         if report is None:
             return

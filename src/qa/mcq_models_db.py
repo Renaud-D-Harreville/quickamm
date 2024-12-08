@@ -3,10 +3,11 @@ import random
 from pathlib import Path
 from pydantic import BaseModel
 from qa import resource_dir_path
-from qa.mcq import MCQModel, AbstractMCQFactory
+from qa.mcq import AbstractMCQFactory
+from qa.models.models import MCQAnswer, MCQData
 
 knowledge_json_path = resource_dir_path / "knowledge.json"
-questions_json_path = resource_dir_path / "mcq_models.json"
+questions_json_path = resource_dir_path / "new_mcq_data.json"
 
 
 class _SingletonMeta(type):
@@ -30,10 +31,10 @@ class _SingletonMeta(type):
 
 
 class MCQModelsDB(BaseModel):
-    mcq_models: list[MCQModel]
+    mcq_models: list[MCQData]
 
     # TODO: improve that function
-    def get_questions_with_topic(self, topics: list[str] = None) -> list[MCQModel]:
+    def get_questions_with_topic(self, topics: list[str] = None) -> list[MCQData]:
         if not topics:
             return self.mcq_models
         l = list()
@@ -44,7 +45,7 @@ class MCQModelsDB(BaseModel):
                     break
         return l
 
-    def get_random_question(self, topics: list[str] = None) -> MCQModel:
+    def get_random_question(self, topics: list[str] = None) -> MCQData:
         working_mcq_models = self.get_questions_with_topic(topics)
         random_mcq_model = random.choice(working_mcq_models)
         return random_mcq_model
@@ -56,7 +57,7 @@ class MCQModelsDB(BaseModel):
             l.extend(question.topics)
         return list(set(l))
 
-    def add_question(self, question: MCQModel):
+    def add_question(self, question: MCQData):
         self.mcq_models.append(question)
         with open(questions_json_path, "wb") as f:
             f.write(self.json().encode("utf-8"))
@@ -74,23 +75,20 @@ class MCQDBMCQFactory(AbstractMCQFactory):
     def _topic_weight(self, topic: str) -> int:
         return len(self.mcq_models_db.get_questions_with_topic([topic]))
 
-    def related_topics(self, surrounding_mcq_object: MCQModel) -> list[str]:
+    def related_topics(self, surrounding_mcq_object: MCQData) -> list[str]:
         return surrounding_mcq_object.topics
 
-    def get_question(self, surrounding_mcq_object: MCQModel) -> str:
+    def get_question(self, surrounding_mcq_object: MCQData) -> str:
         return surrounding_mcq_object.question
 
-    def get_image_path(self, surrounding_mcq_object: MCQModel) -> Path | str | None:
+    def get_image_path(self, surrounding_mcq_object: MCQData) -> Path | str | None:
         return surrounding_mcq_object.image_path
 
-    def get_random_surrounding_question_object(self, topic: str) -> MCQModel:
+    def get_random_surrounding_question_object(self, topic: str) -> MCQData:
         return self.mcq_models_db.get_random_question([topic])
 
-    def get_possible_true_answers(self, surrounding_mcq_object: MCQModel) -> list[str]:
-        return surrounding_mcq_object.correct_answers
-
-    def get_possible_false_answers(self, surrounding_mcq_object: MCQModel) -> list[str]:
-        return surrounding_mcq_object.wrong_answers
+    def get_answers(self, surrounding_mcq_object: MCQData) -> list[MCQAnswer]:
+        return surrounding_mcq_object.answers
 
 
 with open(questions_json_path, "r", encoding='utf-8') as f:

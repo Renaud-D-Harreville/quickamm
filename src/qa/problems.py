@@ -1,14 +1,14 @@
 from pydantic import BaseModel, Field
 from pathlib import Path
 from qa import resource_dir_path
-from qa.mcq import MultipleChoiceQuestion
+from qa.models.models import MCQData
 import json
 
 reports_json_file: Path = resource_dir_path / "problems.json"
 
 
 class QuestionReport(BaseModel):
-    mcq_context: MultipleChoiceQuestion
+    mcq_context: MCQData
     report: str
     answers: list[str] = Field(default_factory=list)
 
@@ -36,7 +36,7 @@ class DictOfQuestionReports(BaseModel):
         if save:
             self.save()
 
-    def get_reports_from_mcq(self, mcq: MultipleChoiceQuestion) -> QuestionReports | None:
+    def get_reports_from_mcq(self, mcq: MCQData) -> QuestionReports | None:
         if (mcq_hash := mcq.hash()) in self.problems:
             return self.problems[mcq_hash]
         return None

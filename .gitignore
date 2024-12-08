@@ -1,4 +1,5 @@
 resources/
+notebooks/
 **/db.sqlite3
 .idea/
 

@@ -4,7 +4,8 @@ from qa.fauna import AnimalsMCQFactory, get_animals
 from qa.flowers import FlowersMCQFactory, get_flowers
 from qa.toponymy import ToponymyMCQFactory, get_toponymy
 from qa.mcq_models_db import MCQDBMCQFactory, get_questions_db
-from qa.mcq import MultipleChoiceQuestion, AbstractMCQFactory
+from qa.mcq import AbstractMCQFactory
+from qa.models.models import MCQData
 
 
 class AllQuestionsFactory:
@@ -19,7 +20,7 @@ class AllQuestionsFactory:
         self.questions_factories.append(AnimalsMCQFactory(get_animals()))
         self.questions_factories.append(FlowersMCQFactory(get_flowers()))
 
-    def get_random_question_from_topics(self, topics: list[str]) -> MultipleChoiceQuestion:
+    def get_random_question_from_topics(self, topics: list[str]) -> MCQData:
         random_topic = random.choice(topics)
         weighted_factories = [factory.topic_weight(random_topic) for factory in self.questions_factories]
         factory: AbstractMCQFactory = random.choices(self.questions_factories, weights=weighted_factories, k=1)[0]

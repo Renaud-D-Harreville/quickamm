@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.views import View
 from qa.mcq_factories import AllQuestionsFactory
-from qa.mcq import MultipleChoiceQuestion
 from app.qcm.forms import QCMForm, TopicForm
 from app.qcm.requests_facades import IndexPostRequestFacade
+from qa.models.models import MCQData
 
 all_questions_factory: AllQuestionsFactory = AllQuestionsFactory()
 
@@ -12,7 +12,7 @@ class QuestionView(View):
     template_name = 'qcm/question/index.html'
 
     @staticmethod
-    def _get_form_from_question(question: MultipleChoiceQuestion) -> QCMForm:
+    def _get_form_from_question(question: MCQData) -> QCMForm:
         form = QCMForm()
         form.fields['question'].initial = question.dict()
         form.fields['text_answers'].choices = [(index, answer) for index, answer in
@@ -30,7 +30,7 @@ class QuestionView(View):
         topics = dict(request.GET.lists())["topic_list"] if "topic_list" in request.GET else ["AMM"]
         question = all_questions_factory.get_random_question_from_topics(topics)
         form = self._get_form_from_question(question)
-        json_question = question.to_mcq_data().model_dump_json()
+        json_question = question.model_dump_json()
         context_dict = {
             "question": question,
             "json_question": json_question,

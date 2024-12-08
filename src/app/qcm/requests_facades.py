@@ -1,4 +1,4 @@
-from qa.mcq import MultipleChoiceQuestion
+from qa.models.models import MCQData
 import json
 
 
@@ -9,9 +9,9 @@ class IndexPostRequestFacade:
         self._data = request.POST
 
     @property
-    def mcq(self) -> MultipleChoiceQuestion:
+    def mcq(self) -> MCQData:
         question_dict = json.loads(self._data["question"])
-        question = MultipleChoiceQuestion(**question_dict)
+        question = MCQData(**question_dict)
         return question
 
     def answer_indexes(self) -> list[int]:

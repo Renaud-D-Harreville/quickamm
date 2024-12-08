@@ -1,9 +1,11 @@
 from pydantic import BaseModel
-from qa.mcq import MultipleChoiceQuestion, AbstractMCQFactory
+from qa.mcq import AbstractMCQFactory
 from qa import resource_dir_path
 import json
 from pathlib import Path
 import random
+
+from qa.models.models import MCQAnswer
 
 flowers_json_path = resource_dir_path / "flora/flowers.json"
 
@@ -46,13 +48,27 @@ class FlowersMCQFactory(AbstractMCQFactory):
     def get_random_surrounding_question_object(self, topic: str) -> Flowers:
         return random.choice(self.flowers.flowers)
 
-    def get_possible_true_answers(self, surrounding_mcq_object: Flower) -> list[str]:
-        return [surrounding_mcq_object.name]
+    @staticmethod
+    def _to_mcq_answer(flower: Flower, is_true: bool) -> MCQAnswer:
+        mcq_answer = MCQAnswer(
+            text=flower.name,
+            is_true=is_true,
+            description=flower.description
+        )
+        return mcq_answer
 
-    def get_possible_false_answers(self, surrounding_mcq_object: Flower) -> list[str]:
-        answers = [flower.name for flower in self.flowers.flowers]
-        for true_answer in self.get_possible_true_answers(surrounding_mcq_object):
-            answers.remove(true_answer)
+    def get_answers(self, surrounding_mcq_object: Flower) -> list[MCQAnswer]:
+        correct_answer = self.get_true_answer(surrounding_mcq_object)
+        wrong_answers = self.get_possible_false_answers(surrounding_mcq_object)
+        answers = [correct_answer] + wrong_answers
+        return answers
+
+    def get_true_answer(self, surrounding_mcq_object: Flower) -> MCQAnswer:
+        return self._to_mcq_answer(surrounding_mcq_object, True)
+
+    def get_possible_false_answers(self, surrounding_mcq_object: Flower) -> list[MCQAnswer]:
+        answers = [self._to_mcq_answer(flower, False) for flower in self.flowers.flowers
+                   if flower.name != surrounding_mcq_object.name]
         return answers
 
 

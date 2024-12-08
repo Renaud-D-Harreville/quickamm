@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views import View
 from app.qcm.forms.mcqcreator import MCQCreator
-from qa.mcq_models_db import get_questions_db, MCQModel
+from qa.mcq_models_db import get_questions_db
+from qa.models.models import MCQData
 
 
 class MCQModelView(View):
@@ -21,7 +22,7 @@ class MCQModelView(View):
             return render(request, self.template_name, context={"form": form})
         print(form.cleaned_data)
         question_db = get_questions_db()
-        question = MCQModel(
+        question = MCQData(
             topics=["Tronc commun"],
             question=form.cleaned_data["question"],
             correct_answers=form.cleaned_data["right_answers"].split("\n"),

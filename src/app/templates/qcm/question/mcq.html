@@ -22,12 +22,28 @@
 </div>
 
 <style>
+input[type="submit"] {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 10px 20px;
+    border: 2px solid #656565;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    transition: border-color 0.3s, color 0.3s;
+    margin-top: 10px;
+}
 
-    #question-mcq {
-        text-align: center;
-        position: relative;
-    }
-   
+input[type="submit"]:hover {
+    border-color: #656565;
+    color: #000000;
+}
+
+
+
+
+
     #question-mcq .correct::after {
         content: '✔';
         color: green;
@@ -44,11 +60,14 @@
     }
 
     #question-mcq .option {
-        display: flex;
-        align-items: center;
-        margin: 5px 0;
+        margin: 10px 0;
     }
+
     #question-mcq .option input {
+        display: none;
+    }
+
+    #question-mcq .collapse-button  {
         display: none;
     }
     #question-mcq .option label {
@@ -66,17 +85,19 @@
     #question-mcq .option input:checked + label {
         background-color: #4CAF50;
     }
+    #question-mcq .option input:checked + label:hover {
+        background-color: #22c328;
+    }
     #question-mcq button {
         background-color: #4CAF50;
         color: white;
         padding: 10px 20px;
-        margin: 10px 0;
         border: none;
         border-radius: 5px;
         cursor: pointer;
     }
     #question-mcq button:hover {
-        background-color: #45a049;
+        background-color: #22c328;
     }
 
 </style>
@@ -89,12 +110,27 @@
     function renderQuestion() {
         const questionHTML = `
             <form id="question-form">
-                ${questionData.answers.map((option, index) => `
-                    <div class="option">
-                        <input type="checkbox" id="option-${index}" name="option" value="${index}">
-                        <label for="option-${index}">${option.text}</label>
+                ${questionData.answers.map((option, index) => {
+                    const descriptionText = (option.description && option.description.trim() !== '') ? option.description : '---';
+                    return `
+                    <div class="option container text-center">
+                      <div class="row">
+                        <div class="col-10">
+                          <input type="checkbox" id="option-${index}" name="option" value="${index}" >
+                          <label for="option-${index}">${option.text}</label>
+                        </div>
+                        <div class="col-2">
+                          <button type="button" class="collapse-button" data-bs-toggle="collapse" data-bs-target="#description-${index}">▾</button>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <div id="description-${index}" class="collapse">${descriptionText}</div>
+                        </div>
+                      </div>
                     </div>
-                `).join('')}
+                `
+                }).join('')}
                 <button type="button" onclick="validateAnswers()">Valider</button>
             </form>
             <div id="message"></div>
@@ -102,6 +138,12 @@
         questionSection.innerHTML = questionHTML;
     }
 
+    function dislpayCollapseButtons() {
+        const collapseButtons = document.querySelectorAll('.collapse-button');
+        collapseButtons.forEach(button => {
+            button.style.display = 'inline-block';
+        });
+    }
     function validateAnswers() {
         const form = document.getElementById('question-form');
         const selectedOptions = Array.from(form.elements['option'])
@@ -127,6 +169,7 @@
 
         const message = document.getElementById('message');
         message.textContent = isCorrect ? 'Félicitations! Vous avez trouvé les bonnes réponses.' : 'Désolé, veuillez réessayer.';
+        dislpayCollapseButtons();
     }
 
     renderQuestion();

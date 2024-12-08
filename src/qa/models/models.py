@@ -8,7 +8,8 @@ class MCQAnswer(BaseModel):
     sources: list[str] | None = None
 
 
-class BasicMCQData(BaseModel):
+class MCQData(BaseModel):
+    topics: list[str]
     question: str
     image_path: str | None = None
     answers: list[MCQAnswer]
@@ -22,6 +23,11 @@ class BasicMCQData(BaseModel):
     def wrong_answers(self) -> list[MCQAnswer]:
         return [answer for answer in self.answers if not answer.is_true]
 
+    def is_under_topic(self, topic: str) -> bool:
+        for t in self.topics:
+            # Search if for example t "AMM/Level2/Level3" starts with input topic "AMM/Level2"
+            if t.startswith(topic):
+                return True
+        return False
 
-class MCQData(BasicMCQData):
-    topics: list[str]
+

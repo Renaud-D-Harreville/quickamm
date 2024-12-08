@@ -4,6 +4,7 @@ from qa import resource_dir_path
 import json
 from pathlib import Path
 import random
+from qa.models.models import MCQAnswer
 
 fauna_json_path = resource_dir_path / "fauna/fauna.json"
 
@@ -46,13 +47,26 @@ class AnimalsMCQFactory(AbstractMCQFactory):
     def get_random_surrounding_question_object(self, topic: str) -> Animal:
         return random.choice(self.animals.animals)
 
-    def get_possible_true_answers(self, surrounding_mcq_object: Animal) -> list[str]:
-        return [surrounding_mcq_object.name]
+    def _to_mcq_answer(self, animal: Animal, is_true: bool) -> MCQAnswer:
+        mcq_answer = MCQAnswer(
+            text=animal.name,
+            is_true=is_true,
+            description=animal.description
+        )
+        return mcq_answer
 
-    def get_possible_false_answers(self, surrounding_mcq_object: Animal) -> list[str]:
-        answers = [animal.name for animal in self.animals.animals]
-        for true_answer in self.get_possible_true_answers(surrounding_mcq_object):
-            answers.remove(true_answer)
+    def get_answers(self, surrounding_mcq_object: Animal) -> list[MCQAnswer]:
+        correct_answer = self.get_true_answer(surrounding_mcq_object)
+        wrong_answers = self.get_possible_false_answers(surrounding_mcq_object)
+        answers = [correct_answer] + wrong_answers
+        return answers
+
+    def get_true_answer(self, surrounding_mcq_object: Animal) -> MCQAnswer:
+        return self._to_mcq_answer(surrounding_mcq_object, True)
+
+    def get_possible_false_answers(self, surrounding_mcq_object: Animal) -> list[MCQAnswer]:
+        answers = [self._to_mcq_answer(animal, False) for animal in self.animals.animals
+                   if animal.name != surrounding_mcq_object.name]
         return answers
 
 

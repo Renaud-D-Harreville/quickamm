@@ -1,12 +1,8 @@
-
-from qa.mcq import AbstractMCQFactory
+from qa.mcq_handler.base_factory import AbstractMCQFactory, SurroundingMCQObjectClass
+from qa.mcq_db.models import MCQAnswer
+from qa.flora.models import Flowers, Flower
 from pathlib import Path
 import random
-
-from qa.models.models import MCQAnswer
-from qa.flora.models import Flowers, Flower
-
-
 
 
 class FlowersMCQFactory(AbstractMCQFactory):
@@ -59,3 +55,6 @@ class FlowersMCQFactory(AbstractMCQFactory):
         answers = [self._to_mcq_answer(flower, False) for flower in self.flowers.flowers
                    if flower.name != surrounding_mcq_object.name]
         return answers
+
+    def get_explanation(self, surrounding_mcq_object: Flower) -> str | None:
+        return surrounding_mcq_object.description

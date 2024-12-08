@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views import View
 from app.qcm.forms.mcqcreator import MCQCreator
-from qa.mcq_models_db import get_questions_db
-from qa.models.models import MCQData
+from qa.mcq_db import get_questions_db
+from qa.mcq_db.models import MCQData
 
 
 class MCQModelView(View):
@@ -28,6 +28,6 @@ class MCQModelView(View):
             correct_answers=form.cleaned_data["right_answers"].split("\n"),
             wrong_answers=form.cleaned_data["wrong_answers"].split("\n")
         )
-        question_db.add_question(question)
+        # question_db.add_question(question)  # Do the refactor of file qa.mcq_db.models before !
         form = MCQCreator()
         return render(request, self.template_name, context={"form": form})

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from pathlib import Path
 from qa import resource_dir_path
-from qa.models.models import MCQData
+from qa.mcq_db.models import MCQData
 import json
 
 reports_json_file: Path = resource_dir_path / "problems.json"

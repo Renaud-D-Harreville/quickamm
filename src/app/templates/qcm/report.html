@@ -12,18 +12,18 @@
 {#    #}
 {#    <h3>Question : </h3>#}
 {#    #}
-{#<p>{{ mcq.question }}</p>#}
-{#{% if mcq.image_path %}#}
+{#<p>{{ mcq_db.question }}</p>#}
+{#{% if mcq_db.image_path %}#}
 {#    {% load static %}#}
-{#    <img src="{% static mcq.image_path %}" alt="My image" class="rounded" width="200" height="200">#}
+{#    <img src="{% static mcq_db.image_path %}" alt="My image" class="rounded" width="200" height="200">#}
 {#{% endif %}#}
 {#    <h3>Réponses proposées : </h3>#}
-{#{%  for answer in mcq.answers %}#}
+{#{%  for answer in mcq_db.answers %}#}
 {#    <p> {{ answer }}</p>#}
 {#{% endfor %}    #}
 {#    <h3>Index des bonnes réponses : </h3>#}
 {#    #}
-{#    {%  for i in mcq.correct_indexes %}#}
+{#    {%  for i in mcq_db.correct_indexes %}#}
 {#    <p> {{ i }}</p>#}
 {#{% endfor %}#}
 {#{% if reports %}#}

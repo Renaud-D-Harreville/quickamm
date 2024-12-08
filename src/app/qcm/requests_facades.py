@@ -1,4 +1,4 @@
-from qa.models.models import MCQData
+from qa.mcq_db.models import MCQData
 import json
 
 

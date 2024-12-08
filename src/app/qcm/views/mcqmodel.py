@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from qa.mcq_models_db import get_questions_db
+from qa.mcq_db import get_questions_db
 
 
 class MCQModelView(View):

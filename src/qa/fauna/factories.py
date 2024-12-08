@@ -1,7 +1,7 @@
-from qa.mcq import AbstractMCQFactory
+from qa.mcq_handler.base_factory import AbstractMCQFactory
 from pathlib import Path
 import random
-from qa.models.models import MCQAnswer
+from qa.mcq_db.models import MCQAnswer
 from qa.fauna.models import Animal, Animals
 
 
@@ -54,3 +54,6 @@ class AnimalsMCQFactory(AbstractMCQFactory):
         answers = [self._to_mcq_answer(animal, False) for animal in self.animals.animals
                    if animal.name != surrounding_mcq_object.name]
         return answers
+
+    def get_explanation(self, surrounding_mcq_object: Animal) -> str | None:
+        return surrounding_mcq_object.description

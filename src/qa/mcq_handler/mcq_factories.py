@@ -3,9 +3,9 @@ import random
 from qa.fauna import AnimalsMCQFactory, get_animals
 from qa.flora import FlowersMCQFactory, get_flowers
 from qa.toponymy import ToponymyToWordMCQFactory, WordToToponymyMCQFactory, get_toponymy
-from qa.mcq_models_db import MCQDBMCQFactory, get_questions_db
-from qa.mcq import AbstractMCQFactory
-from qa.models.models import MCQData
+from qa.mcq_db import MCQDBMCQFactory, get_questions_db
+from qa.mcq_handler.base_factory import AbstractMCQFactory
+from qa.mcq_db.models import MCQData
 
 
 class AllQuestionsFactory:

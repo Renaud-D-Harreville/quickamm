@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
-from qa.models.models import MCQData
-from qa.problems import DictOfQuestionReports, get_dict_problems, QuestionReport, QuestionReports
+from qa.mcq_db.models import MCQData
+from qa.mcq_handler.reports import DictOfQuestionReports, get_dict_problems, QuestionReport, QuestionReports
 from app.qcm.forms import ReportForm
 import json
 
@@ -30,7 +30,7 @@ class ReportView(View):
         mcq_reports = all_reports.get_reports_from_mcq(mcq)
         context_dict = {
             "reports": mcq_reports,
-            "mcq": mcq,
+            "mcq_db": mcq,
             "form": self._get_form(mcq_reports, mcq),
             "json_dump": mcq.model_dump_json()
         }
@@ -53,7 +53,7 @@ class ReportView(View):
         mcq_reports = all_reports.get_reports_from_mcq(mcq)
         context_dict = {
             "reports": mcq_reports,
-            "mcq": mcq,
+            "mcq_db": mcq,
             "form": self._get_form(mcq_reports, mcq)
         }
         return render(request, self.template_name, context=context_dict)

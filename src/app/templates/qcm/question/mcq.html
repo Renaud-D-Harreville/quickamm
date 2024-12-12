@@ -1,16 +1,46 @@
 
 <div id="question-mcq">
-    <h2>Question</h2>
-    <p>{{ question.question }}</p>
-
-    {% if question.image_path %}
-        {% load static %}
-        <img src="{% static question.image_path %}" alt="My image">
-    {% endif %}
-    <div id="question-section">
-        <!-- Dynamic content will be inserted here -->
+<div class="container">
+  <div class="row">
+    <div class="col-10">
+      <h2>Question</h2>
+      <p>{{ question.question }}</p>
     </div>
-
+    <div class="col-2 align-items-center">
+      <span style="font-size: 60px" id="text-question">&nbsp;</span>
+    </div>
+  </div>
+</div>
+  {% if question.image_path %}
+      {% load static %}
+      <img src="{% static question.image_path %}" alt="My image">
+  {% endif %}
+  <div id="question-section">
+    <form id="question-form">
+      {% for option in question.answers %}
+        <div class="option container text-center">
+          <div class="row">
+            <div class="col-1">
+              <span style="font-size: 25px" id="option-icon-{{forloop.counter}}"></span>
+            </div>
+            <div class="col-10">
+              <input type="checkbox" id="option-{{forloop.counter}}" name="option" value="{{forloop.counter}}" >
+              <label for="option-{{forloop.counter}}">{{option.text}}</label>
+            </div>
+            <div class="col-1">
+              <button type="button" class="collapse-button" data-bs-toggle="collapse" data-bs-target="#description-{{forloop.counter}}">▾</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div id="description-{{forloop.counter}}" class="collapse">{{option.explanation}}</div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    <button type="button" onclick="validateAnswers()">Valider</button>
+    </form>
+  </div>
 <div>
             <!-- Texte collapsible -->
             <div id="collapseText" class="collapse">
@@ -56,20 +86,11 @@
 
 <style>
 
-
-    #question-mcq .correct::after {
-        content: '✔';
+    #question-mcq .correct {
         color: green;
-        position: absolute;
-        right: 10px;
-        top: 50%;
     }
-    #question-mcq .wrong::after {
-        content: '✖';
+    #question-mcq .wrong {
         color: red;
-        position: absolute;
-        right: 10px;
-        top: 50%;
     }
 
     #question-mcq .option {
@@ -151,36 +172,6 @@
     const questionData = JSON.parse(data.question);
     const questionSection = document.getElementById('question-section');
 
-    function renderQuestion() {
-        const questionHTML = `
-            <form id="question-form">
-                ${questionData.answers.map((option, index) => {
-                    const descriptionText = (option.explanation && option.explanation.trim() !== '') ? option.explanation : '---';
-                    return `
-                    <div class="option container text-center">
-                      <div class="row">
-                        <div class="col-11">
-                          <input type="checkbox" id="option-${index}" name="option" value="${index}" >
-                          <label for="option-${index}">${option.text}</label>
-                        </div>
-                        <div class="col-1">
-                          <button type="button" class="collapse-button" data-bs-toggle="collapse" data-bs-target="#description-${index}">▾</button>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-11">
-                          <div id="description-${index}" class="collapse">${descriptionText}</div>
-                        </div>
-                      </div>
-                    </div>
-                `
-                }).join('')}
-                <button type="button" onclick="validateAnswers()">Valider</button>
-            </form>
-            <div id="message"></div>
-        `;
-        questionSection.innerHTML = questionHTML;
-    }
 
     function dislpayCollapseButtons() {
         const collapseButtons = document.querySelectorAll('.collapse-button');
@@ -196,25 +187,28 @@
 
         let isCorrect = true;
         questionData.answers.forEach((option, index) => {
-            const label = form.querySelector(`label[for="option-${index}"]`);
+            const label = form.querySelector(`label[for="option-${index + 1}"]`);
+            const paragraphId = `option-icon-${index + 1}`;
+            const optionIcon = document.getElementById(paragraphId);
             if (option.is_true) {
-                label.classList.add('correct');
-                if (!selectedOptions.includes(index)) {
+                optionIcon.classList.add('correct');
+                optionIcon.innerText = '✔';
+                if (!selectedOptions.includes(index + 1)) {
                     isCorrect = false;
                 }
             } else {
-                label.classList.add('wrong');
-                if (selectedOptions.includes(index)) {
+                optionIcon.innerText = '✖';
+                optionIcon.classList.add('wrong');
+                if (selectedOptions.includes(index + 1)) {
                     isCorrect = false;
                 }
-                
+
             }
         });
-
-        const message = document.getElementById('message');
-        message.textContent = isCorrect ? 'Félicitations! Vous avez trouvé les bonnes réponses.' : 'Désolé, veuillez réessayer.';
+        const questionText = document.getElementById('text-question');
+        questionText.classList.add(isCorrect ? 'correct' : 'wrong');
+        questionText.innerText = isCorrect ? '✔' : '✖';
         dislpayCollapseButtons();
     }
 
-    renderQuestion();
 </script>

@@ -1,8 +1,8 @@
 import json
 from qa import resource_dir_path
 from qa.mcq_db.models import MCQModelsDB
-knowledge_json_path = resource_dir_path / "knowledge.json"
-questions_json_path = resource_dir_path / "new_mcq_data.json"
+# knowledge_json_path = resource_dir_path / "knowledge.json"
+questions_json_path = resource_dir_path / "mcq_explanation.json"
 
 
 class _SingletonMeta(type):

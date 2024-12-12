@@ -1,11 +1,39 @@
+from abc import ABC
+
 from pydantic import BaseModel
+from pydantic import HttpUrl
 import random
+
+
+#############################
+####  Reference classes  ####
+#############################
+
+
+class Reference(BaseModel, ABC):
+    type: str
+
+
+class HttpUrlReference(Reference):
+    type: str = "url-http"
+    url: HttpUrl
+
+
+class NoteReference(Reference):
+    type: str = "note"
+    note: str
+
+
+#################################
+####  'Normal' MCQs classes  ####
+#################################
+
 
 class MCQAnswer(BaseModel):
     text: str
     is_true: bool
-    description: str | None = None
-    sources: list[str] | None = None
+    explanation: str | None = None
+    references: list[Reference] | None = None
 
 
 class MCQData(BaseModel):

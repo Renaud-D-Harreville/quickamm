@@ -59,7 +59,7 @@ class ToponymyToWordMCQFactory(BaseToponymyMCQFactory):
         mcq_answer = MCQAnswer(
             text=toponymy_word.get_str_traduction(),
             is_true=is_true,
-            description=toponymy_word.get_basic_description()
+            explanation=toponymy_word.get_basic_description()
         )
         return mcq_answer
 
@@ -77,6 +77,6 @@ class WordToToponymyMCQFactory(BaseToponymyMCQFactory):
         mcq_answer = MCQAnswer(
             text=toponymy_word.get_words(),
             is_true=is_true,
-            description=toponymy_word.get_basic_description()
+            explanation=toponymy_word.get_basic_description()
         )
         return mcq_answer

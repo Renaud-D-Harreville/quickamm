@@ -37,7 +37,7 @@ class AnimalsMCQFactory(AbstractMCQFactory):
         mcq_answer = MCQAnswer(
             text=animal.name,
             is_true=is_true,
-            description=animal.description
+            explanation=animal.description
         )
         return mcq_answer
 

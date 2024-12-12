@@ -38,7 +38,7 @@ class FlowersMCQFactory(AbstractMCQFactory):
         mcq_answer = MCQAnswer(
             text=flower.name,
             is_true=is_true,
-            description=flower.description
+            explanation=flower.description
         )
         return mcq_answer
 

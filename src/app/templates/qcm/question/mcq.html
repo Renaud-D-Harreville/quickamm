@@ -7,7 +7,7 @@
       <p>{{ question.question }}</p>
     </div>
     <div class="col-2 align-items-center">
-      <span style="font-size: 60px" id="text-question">&nbsp;</span>
+      <span id="big-result-icon">&nbsp;</span>
     </div>
   </div>
 </div>
@@ -21,7 +21,7 @@
         <div class="option container text-center">
           <div class="row">
             <div class="col-1">
-              <span style="font-size: 25px" id="option-icon-{{forloop.counter}}"></span>
+              <span class="result-icon" id="option-icon-{{forloop.counter}}"></span>
             </div>
             <div class="col-10">
               <input type="checkbox" id="option-{{forloop.counter}}" name="option" value="{{forloop.counter}}" >
@@ -86,11 +86,23 @@
 
 <style>
 
+    #big-result-icon {
+        font-size: 60px;
+        opacity: 0;
+        transition: opacity 1s;
+    }
+    .result-icon {
+        font-size: 25px;
+        opacity: 0;
+        transition: opacity 1s .5s;
+    }
     #question-mcq .correct {
-        color: green;
+        color: darkseagreen;
+        opacity: 1;
     }
     #question-mcq .wrong {
-        color: red;
+        color: firebrick;
+        opacity: 1;
     }
 
     #question-mcq .option {
@@ -205,7 +217,7 @@
 
             }
         });
-        const questionText = document.getElementById('text-question');
+        const questionText = document.getElementById('big-result-icon');
         questionText.classList.add(isCorrect ? 'correct' : 'wrong');
         questionText.innerText = isCorrect ? '✔' : '✖';
         dislpayCollapseButtons();

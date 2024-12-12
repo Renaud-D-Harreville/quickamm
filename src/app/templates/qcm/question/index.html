@@ -2,11 +2,11 @@
 {% load static %}
 {%  block body %}
 
-    <div class="row g-6 w-100 justify-content-center" id="question-index">
-        <div class="col-sm-4 section" id="questionBox">
+    <div class="row g-10 w-100 justify-content-center" id="question-index">
+        <div class="col-lg-8 section" id="questionBox">
             {% include 'qcm/question/mcq.html' %}
         </div>
-        <div class="col-sm-6 section" id="formBox">
+        <div class="col-lg-4 section" id="formBox">
             {% include 'qcm/question/topic.html' %}
         </div>
     </div>

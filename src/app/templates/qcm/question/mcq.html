@@ -1,19 +1,18 @@
-
 <div id="question-mcq">
-<div class="container">
-  <div class="row">
-    <div class="col-10">
-      <h2>Question</h2>
-      <p>{{ question.question }}</p>
-    </div>
-    <div class="col-2 align-items-center">
-      <span id="big-result-icon">&nbsp;</span>
+  <div class="container">
+    <div class="row">
+      <div class="col-10">
+        <h2>Question</h2>
+        <p>{{ question.question }}</p>
+      </div>
+      <div class="col-2 align-items-center">
+        <span id="big-result-icon">&nbsp;</span>
+      </div>
     </div>
   </div>
-</div>
   {% if question.image_path %}
-      {% load static %}
-      <img src="{% static question.image_path %}" alt="My image">
+    {% load static %}
+    <img src="{% static question.image_path %}" alt="My image">
   {% endif %}
   <div id="question-section">
     <form id="question-form">
@@ -21,70 +20,67 @@
         <div class="option container text-center">
           <div class="row">
             <div class="col-1">
-              <span class="result-icon" id="option-icon-{{forloop.counter}}"></span>
+              <span class="result-icon" id="option-icon-{{ forloop.counter }}"></span>
             </div>
             <div class="col-10">
-              <input type="checkbox" id="option-{{forloop.counter}}" name="option" value="{{forloop.counter}}" >
-              <label for="option-{{forloop.counter}}">{{option.text}}</label>
+              <input type="checkbox" id="option-{{ forloop.counter }}" name="option" value="{{ forloop.counter }}">
+              <label for="option-{{ forloop.counter }}">{{ option.text }}</label>
             </div>
             <div class="col-1">
-              <button type="button" class="collapse-button" data-bs-toggle="collapse" data-bs-target="#description-{{forloop.counter}}">▾</button>
+              <button type="button" class="collapse-button" data-bs-toggle="collapse"
+                      data-bs-target="#description-{{ forloop.counter }}">▾
+              </button>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
-              <div id="description-{{forloop.counter}}" class="collapse">{{option.explanation}}</div>
+              <div id="description-{{ forloop.counter }}" class="collapse">{{ option.explanation }}</div>
             </div>
           </div>
         </div>
       {% endfor %}
-    <button type="button" onclick="validateAnswers()">Valider</button>
+      <button type="button" onclick="validateAnswers()">Valider</button>
     </form>
   </div>
-<div>
-            <!-- Texte collapsible -->
-            <div id="collapseText" class="collapse">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-            </div>
-            <!-- Texte aperçu (visible par défaut) -->
-            <div id="previewText" class="text-preview">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod, libero et pretium dapibus, dui risus tristique lacus, a blandit nisi justo in ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis bibendum augue ut erat fermentum, sit amet fermentum quam fermentum. Nullam consectetur orci ac lacinia varius.
-
-            </div>
-            <!-- Bouton pour basculer entre l'aperçu et le texte complet -->
-            <button class="btn btn-link mt-2 p-0" id="toggleButton">
-                Lire plus
-            </button>
-        </div>
+  <div class="long-explanation">
+    <!-- Texte collapsible -->
+    <div id="collapseText" class="collapse">
+      {{ question.description }}
+    </div>
+    <!-- Texte aperçu (visible par défaut) -->
+    <div id="previewText" class="text-preview">
+      {{ question.description }}
+    </div>
+    <!-- Bouton pour basculer entre l'aperçu et le texte complet -->
+    <button class="btn btn-link mt-2 p-0" id="toggleButton">
+      Lire plus
+    </button>
+  </div>
 
 
-    <form action="{% url 'index' %}" method="get">
-        {% csrf_token %}
-        {% for topic in topic_list %}
-            <input type="hidden" name="topic_list" value="{{ topic }}">
-        {% endfor %}
-        <input type="submit" value="Nouvelle question">
-    </form>
+  <form action="{% url 'index' %}" method="get">
+    {% csrf_token %}
+    {% for topic in topic_list %}
+      <input type="hidden" name="topic_list" value="{{ topic }}">
+    {% endfor %}
+    <input type="submit" value="Nouvelle question">
+  </form>
 
 </div>
 
 <style>
+
+    .long-explanation {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 2s 1.5s, opacity 2s 0.5s;
+}
+
+.long-explanation.visible {
+    max-height: fit-content; /* Définir une hauteur suffisante pour contenir le contenu */
+    opacity: 1;
+}
 
     #big-result-icon {
         font-size: 60px;
@@ -191,6 +187,12 @@
             button.style.display = 'inline-block';
         });
     }
+    function dislpayLongExplanation() {
+        const collapseButtons = document.querySelectorAll('.long-explanation');
+        collapseButtons.forEach(button => {
+            button.classList.add('visible');
+        });
+    }
     function validateAnswers() {
         const form = document.getElementById('question-form');
         const selectedOptions = Array.from(form.elements['option'])
@@ -221,6 +223,7 @@
         questionText.classList.add(isCorrect ? 'correct' : 'wrong');
         questionText.innerText = isCorrect ? '✔' : '✖';
         dislpayCollapseButtons();
+        dislpayLongExplanation();
     }
 
 </script>

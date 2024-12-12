@@ -9,11 +9,14 @@
         <span id="big-result-icon">&nbsp;</span>
       </div>
     </div>
+    <div class="row">
+      {% if question.image_path %}
+        {% load static %}
+        <img src="{% static question.image_path %}" alt="My image" class="question-img">
+      {% endif %}
+    </div>
   </div>
-  {% if question.image_path %}
-    {% load static %}
-    <img src="{% static question.image_path %}" alt="My image">
-  {% endif %}
+
   <div id="question-section">
     <form id="question-form">
       {% for option in question.answers %}
@@ -53,7 +56,7 @@
     </div>
     <!-- Bouton pour basculer entre l'aperçu et le texte complet -->
     <button class="btn btn-link mt-2 p-0" id="toggleButton">
-      Lire plus
+      Lire plus...
     </button>
   </div>
 
@@ -70,32 +73,44 @@
 
 <style>
 
-    .long-explanation {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 2s 1.5s, opacity 2s 0.5s;
-}
+    .question-img {
+        max-height: 400px; /* Limite la hauteur à 400px */
+        width: auto; /* Garde les proportions */
+        height: auto; /* Garde les proportions (en cas de max-height) */
+        max-width: 100%; /* Évite de dépasser la largeur du conteneur */
+        margin: 0 auto; /* Centrage horizontal si nécessaire */
+        border-radius: 20px !important;
+    }
 
-.long-explanation.visible {
-    max-height: fit-content; /* Définir une hauteur suffisante pour contenir le contenu */
-    opacity: 1;
-}
+    .long-explanation {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 2s 1.5s, opacity 2s 0.5s;
+    }
+
+    .long-explanation.visible {
+        max-height: fit-content; /* Définir une hauteur suffisante pour contenir le contenu */
+        opacity: 1;
+    }
 
     #big-result-icon {
         font-size: 60px;
         opacity: 0;
         transition: opacity 1s;
     }
+
     .result-icon {
         font-size: 25px;
         opacity: 0;
         transition: opacity 1s .5s;
     }
+
     #question-mcq .correct {
         color: darkseagreen;
         opacity: 1;
     }
+
     #question-mcq .wrong {
         color: firebrick;
         opacity: 1;
@@ -109,9 +124,10 @@
         display: none;
     }
 
-    #question-mcq .collapse-button  {
+    #question-mcq .collapse-button {
         display: none;
     }
+
     #question-mcq .option label {
         background-color: #ccc;
         color: black;
@@ -124,12 +140,15 @@
         transition: background-color 0.3s;
         position: relative;
     }
+
     #question-mcq .option input:checked + label {
         background-color: #4CAF50;
     }
+
     #question-mcq .option input:checked + label:hover {
         background-color: #22c328;
     }
+
     #question-mcq button {
         background-color: #4CAF50;
         color: white;
@@ -138,19 +157,20 @@
         border-radius: 5px;
         cursor: pointer;
     }
+
     #question-mcq button:hover {
         background-color: #22c328;
     }
 
 
-        /* Limite l'aperçu initial à deux lignes */
-        .text-preview {
-            display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limite à 2 lignes */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    /* Limite l'aperçu initial à deux lignes */
+    .text-preview {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limite à 2 lignes */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
 
 </style>

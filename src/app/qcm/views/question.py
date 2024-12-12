@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from qa.mcq_handler.mcq_factories import AllQuestionsFactory
+from qa.api.mcq_factories import AllQuestionsFactory
 from app.qcm.forms import QCMForm, TopicForm
 from app.qcm.requests_facades import IndexPostRequestFacade
 from qa.mcq_db.models import MCQData

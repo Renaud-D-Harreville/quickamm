@@ -1,4 +1,4 @@
-from qa.mcq_handler.base_factory import AbstractMCQFactory, SurroundingMCQObjectClass
+from qa.api.base_factory import AbstractMCQFactory
 from qa.mcq_db.models import MCQAnswer
 from qa.flora.models import Flowers, Flower
 from pathlib import Path
@@ -58,3 +58,8 @@ class FlowersMCQFactory(AbstractMCQFactory):
 
     def get_explanation(self, surrounding_mcq_object: Flower) -> str | None:
         return surrounding_mcq_object.description
+
+    def get_all_surrounding_objects(self, topic: str) -> list[Flower]:
+        if self.is_under_topic(topic) is False:
+            raise ValueError(f"Topic {topic} not in {self.TOPICS}")
+        return self.flowers.flowers

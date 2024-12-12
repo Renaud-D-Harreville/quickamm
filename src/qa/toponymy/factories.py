@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 from qa.toponymy.models import ToponymyWord, ToponymyList
 from qa.mcq_db.models import MCQAnswer
-from qa.mcq_handler.base_factory import AbstractMCQFactory
+from qa.api.base_factory import AbstractMCQFactory
 import random
 from abc import ABC
 
@@ -47,6 +47,11 @@ class BaseToponymyMCQFactory(AbstractMCQFactory, ABC):
     def get_explanation(self, surrounding_mcq_object: ToponymyWord) -> str | None:
         return surrounding_mcq_object.get_basic_description()
 
+    def get_all_surrounding_objects(self, topic: str) -> list[ToponymyWord]:
+        if self.is_under_topic(topic) is False:
+            raise ValueError(f"Topic {topic} not in {self.TOPICS}")
+        return self.toponymy.words
+
 
 class ToponymyToWordMCQFactory(BaseToponymyMCQFactory):
     TOPICS = ["AMM", "AMM/Toponymie/Toponyme vers traduction"]
@@ -80,3 +85,5 @@ class WordToToponymyMCQFactory(BaseToponymyMCQFactory):
             explanation=toponymy_word.get_basic_description()
         )
         return mcq_answer
+
+

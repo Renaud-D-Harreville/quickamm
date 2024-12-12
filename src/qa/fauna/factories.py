@@ -1,4 +1,4 @@
-from qa.mcq_handler.base_factory import AbstractMCQFactory
+from qa.api.base_factory import AbstractMCQFactory
 from pathlib import Path
 import random
 from qa.mcq_db.models import MCQAnswer
@@ -6,6 +6,7 @@ from qa.fauna.models import Animal, Animals
 
 
 class AnimalsMCQFactory(AbstractMCQFactory):
+
     TOPICS = ["AMM", "AMM/Fauna"]
 
     def __init__(self, animals: Animals):
@@ -57,3 +58,8 @@ class AnimalsMCQFactory(AbstractMCQFactory):
 
     def get_explanation(self, surrounding_mcq_object: Animal) -> str | None:
         return surrounding_mcq_object.description
+
+    def get_all_surrounding_objects(self, topic: str) -> list[Animal]:
+        if self.is_under_topic(topic) is False:
+            raise ValueError(f"Topic {topic} not in {self.TOPICS}")
+        return self.animals.animals

@@ -1,5 +1,5 @@
 from qa.mcq_db.models import MCQData, MCQAnswer, MCQModelsDB
-from qa.mcq_handler.base_factory import AbstractMCQFactory
+from qa.api.base_factory import AbstractMCQFactory
 from pathlib import Path
 
 
@@ -32,3 +32,8 @@ class MCQDBMCQFactory(AbstractMCQFactory):
 
     def get_explanation(self, surrounding_mcq_object: MCQData) -> str | None:
         return surrounding_mcq_object.description
+
+    def get_all_surrounding_objects(self, topic: str) -> list[MCQData]:
+        if self.is_under_topic(topic) is False:
+            raise ValueError(f"Topic {topic} not in {self.topics}")
+        return self.mcq_models_db.get_questions_with_topic([topic])

@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from qa.mcq_db.models import MCQAnswer, MCQData
-from qa.mcq_handler.builders import MCQBuilder
 from typing import TypeVar
 
 
@@ -53,6 +52,10 @@ class AbstractMCQFactory(ABC):
         return None
 
     @abstractmethod
+    def get_all_surrounding_objects(self, topic: str) -> list[SurroundingMCQObjectClass]:
+        pass
+
+    @abstractmethod
     def get_random_surrounding_question_object(self, topic: str) -> SurroundingMCQObjectClass:
         pass
 
@@ -64,9 +67,7 @@ class AbstractMCQFactory(ABC):
     def get_explanation(self, surrounding_mcq_object: SurroundingMCQObjectClass) -> str | None:
         pass
 
-
-    def get_random_mcq_data(self, topic: str) -> MCQData:
-        surrounding_mcq_object = self.get_random_surrounding_question_object(topic)
+    def get_whole_mcq_data(self, surrounding_mcq_object: SurroundingMCQObjectClass) -> MCQData:
         return MCQData(
             topics=self.related_topics(surrounding_mcq_object),
             question=self.get_question(surrounding_mcq_object),
@@ -76,8 +77,4 @@ class AbstractMCQFactory(ABC):
         )
 
 
-    def make_random_mcq(self, topic: str) -> MCQData:
-        mcq_model = self.get_random_mcq_data(topic)
-        builder = MCQBuilder(mcq_model, max_nb_correct_answers=2, probs=[1, 1/6])
-        mcq = builder.build_mcq()
-        return mcq
+

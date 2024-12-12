@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from qa.mcq_db.models import MCQData
-from qa.mcq_handler.reports import DictOfQuestionReports, get_dict_problems, QuestionReport, QuestionReports
+from qa.api.reports import DictOfQuestionReports, get_dict_problems, QuestionReport, QuestionReports
 from app.qcm.forms import ReportForm
 import json
 

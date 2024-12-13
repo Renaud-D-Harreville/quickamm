@@ -1,16 +1,31 @@
 {% extends "qcm/base.html" %}
 {% load static %}
-{%  block body %}
-<div class="container">
-    <div class="row g-10 w-100 justify-content-center" id="question-index">
-        <div class="col-lg-8 section" id="questionBox">
-            {% include 'qcm/question/mcq.html' %}
-        </div>
-        <div class="col-lg-4 section" id="formBox">
-            {% include 'qcm/question/topic.html' %}
-        </div>
+{% block body %}
+  <div class="container justify-content-center">
+    <div class="row">
+      <form action="{% url 'index' %}" method="get" id="get_new_question_form">
+        {% csrf_token %}
+        <input type="hidden" name="topic_list" id="hidden_topic">
+        <input type="submit" value="Nouvelle question" class="mx-auto d-block">
+      </form>
     </div>
-</div>
+    <div class="row g-10 w-100 " id="question-index">
+      <div class="col-lg-8 section" id="questionBox">
+        {% include 'qcm/question/mcq.html' %}
+      </div>
+      <div class="col-lg-4 section" id="formBox">
+        {% include 'qcm/question/topic.html' %}
+      </div>
+    </div>
+    <div class="row g-10 w-100 " id="question-index">
+      <form action="{% url 'report' %}" method="get">
+        {% csrf_token %}
+        {{ form.question }}
+        <input type="submit" formtarget="_blank" value="Signaler une erreur sur la question">
+      </form>
+    </div>
+
+  </div>
     <style>
         #questionBox {
         }
@@ -38,5 +53,26 @@
             border-radius: 8px;
         }
     </style>
+  <script>
+  document.getElementById('get_new_question_form').addEventListener('submit', function(event) {
+    // Empêche temporairement la soumission pour injecter la donnée
+    event.preventDefault();
+
+    // Récupère la valeur du bouton radio sélectionné
+    const selectedOption = document.querySelector('input[name="topic_list"]:checked')?.value;
+
+    // Vérifie qu'une option est bien sélectionnée
+    if (selectedOption) {
+      // Ajoute la valeur dans le champ caché
+      document.getElementById('hidden_topic').value = selectedOption;
+
+      // Soumet à nouveau le formulaire après injection de la valeur
+      event.target.submit();
+    } else {
+      // Optionnel : alerte si aucun bouton radio n'est sélectionné
+      alert("Veuillez sélectionner une option avant de soumettre le formulaire.");
+    }
+  });
+</script>
 {%  endblock %}
 

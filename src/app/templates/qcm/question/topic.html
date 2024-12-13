@@ -4,20 +4,9 @@
     <div class="multiselect">
       <h2>Choisis ton thème</h2>
       {{ topic_form }}
-      <input type="submit" value="Changer le sujet">
     </div>
   </form>
-  <form action="{% url 'report' %}" method="get">
-    {% csrf_token %}
-    {{ form.question }}
-    <input type="submit" formtarget="_blank" value="Signaler une erreur sur la question">
-  </form>
-  Sujets actuellements sélectionnés :
-  <ol class="hidden">
-    {% for topic in topic_list %}
-      <li>{{ topic }}</li>
-    {% endfor %}
-  </ol>
+
 
 </div>
 

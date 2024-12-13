@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.widgets import CheckboxSelectMultiple
+from django.forms.widgets import CheckboxSelectMultiple, RadioSelect
 from django.utils.safestring import mark_safe
 
 
@@ -19,7 +19,7 @@ class MCQCheckboxSelectMultiple(CheckboxSelectMultiple):
         return mark_safe('\n'.join(output))
 
 
-class TopicCheckboxSelectMultiple(CheckboxSelectMultiple):
+class TopicRadioSelect(RadioSelect):
 
     def get_space_label(self, label: str) -> str:
         split_label = label.split("/")
@@ -29,13 +29,17 @@ class TopicCheckboxSelectMultiple(CheckboxSelectMultiple):
         return space_label
 
     def render(self, name, value, attrs=None, renderer=None):
+        if value is None or len(value) == 0:
+            value = self.choices[0][0]
         output = []
         for i, (option_value, option_label) in enumerate(self.choices):
+            checked = ' checked' if option_value == value[0] else ''
             space_label = self.get_space_label(option_label)
+
             input_id = f"{name}_{i}"
             field_str = f"""
             <div class="topic-button">
-                <input type="radio" name="{name}" value="{option_value}" id="{input_id}"> 
+                <input type="radio" name="{name}" value="{option_value}" id="{input_id}"{checked}> 
                 <label for="{input_id}">{space_label}</label>
             </div>
             """
@@ -49,4 +53,4 @@ class QCMForm(forms.Form):
 
 
 class TopicForm(forms.Form):
-    topic_list = forms.MultipleChoiceField(widget=TopicCheckboxSelectMultiple, label="")
+    topic_list = forms.ChoiceField(widget=TopicRadioSelect, label="", )

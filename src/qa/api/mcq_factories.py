@@ -22,7 +22,7 @@ class AllQuestionsFactory:
         self.questions_factories.append(AnimalsMCQFactory(get_animals()))
         self.questions_factories.append(FlowersMCQFactory(get_flowers()))
 
-    def get_random_factory_from_topics(self, topic: str, seed: int | float | str = 1) -> AbstractMCQFactory:
+    def get_random_factory_from_topics(self, topic: str, seed: int | float | str = None) -> AbstractMCQFactory:
         seed_random = random.Random(seed)
         weighted_factories = [factory.topic_weight(topic) for factory in self.questions_factories]
         factory: AbstractMCQFactory = seed_random.choices(self.questions_factories, weights=weighted_factories, k=1)[0]

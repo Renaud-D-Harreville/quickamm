@@ -1,0 +1,24 @@
+{% extends "qcm/base.html" %}
+{% load static %}
+{%  block body %}
+  <div class="container justify-content-center">
+      <div class="row">
+      <form action="{% url 'daily' %}" method="get">
+        {% csrf_token %}
+        {% for topic in topic_list %}
+          <input type="hidden" name="topic_list" value="{{ topic }}">
+        {% endfor %}
+        <input type="submit" value="Nouvelle question" class="mx-auto d-block">
+      </form>
+    </div>
+    <div class="row g-10 w-100 " id="question-index">
+      <div class="col-lg-8 section" id="questionBox">
+        {% include 'qcm/question/mcq.html' %}
+      </div>
+      <div class="col-lg-4 section" id="formBox">
+        {% include 'qcm/question/topic.html' %}
+      </div>
+    </div>
+
+  </div>
+{%  endblock %}

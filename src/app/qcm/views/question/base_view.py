@@ -4,31 +4,43 @@ from qa.api.mcq_factories import AllQuestionsFactory
 from app.qcm.forms import QCMForm, TopicForm
 from app.qcm.requests_facades import IndexPostRequestFacade
 from qa.mcq_db.models import MCQData
+import abc
 
 all_questions_factory: AllQuestionsFactory = AllQuestionsFactory()
 
-
-class QuestionView(View):
+class AbstractQuestionView(View, abc.ABC):
     template_name = 'qcm/question/index.html'
+
+    @abc.abstractmethod
+    def get_default_topic(self) -> str:
+        pass
+
+    @abc.abstractmethod
+    def get_topic_list(self) -> list[str]:
+        pass
+
+    def get_seed(self) -> str | int | float | None:
+        return None
 
     @staticmethod
     def _get_form_from_question(question: MCQData) -> QCMForm:
         form = QCMForm()
-        form.fields['question'].initial = question.dict()
+        form.fields['question'].initial = question.model_dump()
         form.fields['text_answers'].choices = [(index, answer) for index, answer in
                                                enumerate(question.answers)]
         return form
 
-    @staticmethod
-    def _get_topic_form(initial: str = "AMM") -> TopicForm:
+    def _get_topic_form(self, initial: str = "AMM") -> TopicForm:
         form = TopicForm()
-        form.fields['topic_list'].choices = [(topic, topic) for topic in all_questions_factory.topics]
+        form.fields['topic_list'].choices = [(topic, topic) for topic in self.get_topic_list()]
         form.fields["topic_list"].initial = initial
         return form
 
     def get(self, request):
-        topics = dict(request.GET.lists())["topic_list"] if "topic_list" in request.GET else ["AMM"]
-        question = all_questions_factory.get_random_question_from_topics(topics)
+        topics = dict(request.GET.lists())["topic_list"] \
+            if "topic_list" in request.GET else [self.get_default_topic()]
+        seed = self.get_seed()
+        question = all_questions_factory.get_random_question_from_topics(topics, seed)
         form = self._get_form_from_question(question)
         json_question = question.model_dump_json()
         context_dict = {
@@ -41,7 +53,8 @@ class QuestionView(View):
         return render(request, self.template_name, context_dict)
 
     def post(self, request):
-        topics = dict(request.POST.lists())["topic_list"] if "topic_list" in request.POST else ["AMM"]
+        topics = dict(request.POST.lists())["topic_list"] \
+            if "topic_list" in request.POST else [self.get_default_topic()]
         req_facade = IndexPostRequestFacade(request)
         question = req_facade.mcq
 
@@ -56,3 +69,7 @@ class QuestionView(View):
             "topic_list": topics
         }
         return render(request, self.template_name, context_dict)
+
+
+
+

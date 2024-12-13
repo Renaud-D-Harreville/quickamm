@@ -61,13 +61,7 @@
   </div>
 
 
-  <form action="{% url 'index' %}" method="get">
-    {% csrf_token %}
-    {% for topic in topic_list %}
-      <input type="hidden" name="topic_list" value="{{ topic }}">
-    {% endfor %}
-    <input type="submit" value="Nouvelle question">
-  </form>
+
 
 </div>
 

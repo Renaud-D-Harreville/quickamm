@@ -19,17 +19,12 @@ setuptools.setup(
     classifiers=[],
     # tests_requires=["pytest"],
     include_package_data=True,
-    entry_points={'console_scripts': [
-        'ask_toponymy=qa.runners:ask_toponymy_questions',
-        'ask_flowers=qa.runners:ask_flowers_questions',
-        'ask_fauna=qa.runners:ask_fauna_questions',
-        'ask_random=qa.runners:ask_random_questions'
-    ]},
+    # entry_points={'console_scripts': []},
     install_requires=[req.split(" ")[0] for req in requirements if req[0] != "#"],
     extras_require={
         'dev': ['jupyter', 'pytest', "sphinx", "sphinx-rtd-theme", "wheel"],
     },
-    python_requires=">=3.8"
+    python_requires=">=3.12"
 )
 
 

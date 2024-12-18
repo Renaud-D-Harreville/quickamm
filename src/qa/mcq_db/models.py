@@ -1,8 +1,33 @@
-from abc import ABC
+import abc
+from abc import ABC, abstractmethod
 
 from pydantic import BaseModel
 from pydantic import HttpUrl
 import random
+
+class AbstractReference(BaseModel, abc.ABC):
+    reference_type: str
+
+    @abstractmethod
+    def to_html(self) -> str:
+        pass
+
+
+class URLReference(AbstractReference):
+    reference_type: str = "url"
+    url: HttpUrl
+    description: str
+
+    def to_html(self) -> str:
+        return f"<a href=\"{self.url}\" target=\"_blank\" rel=\"noopener noreferrer\">{self.description}</a>"
+
+
+class TextReference(AbstractReference):
+    reference_type: str = "text"
+    text: str
+
+    def to_html(self) -> str:
+        return self.text
 
 
 class MCQAnswer(BaseModel):
@@ -17,6 +42,7 @@ class MCQData(BaseModel):
     image_path: str | None = None
     answers: list[MCQAnswer]
     description: str | None = None
+    references: list[URLReference | TextReference] | None = None
 
     @property
     def correct_answers(self) -> list[MCQAnswer]:

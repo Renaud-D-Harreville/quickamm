@@ -1,3 +1,4 @@
+{% load mcq_filter %}
 <div id="question-mcq">
   <div class="container">
     <div class="row">
@@ -37,7 +38,10 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <div id="description-{{ forloop.counter }}" class="collapse">{{ option.explanation }}</div>
+              <div id="description-{{ forloop.counter }}" class="collapse">
+                <span>{{ option.explanation|markdown_to_html }}</span>
+              </div>
+
             </div>
           </div>
         </div>
@@ -48,19 +52,29 @@
   <div class="long-explanation">
     <!-- Texte collapsible -->
     <div id="collapseText" class="collapse">
-      {{ question.description }}
+      <span>{{ question.description|markdown_to_html }}</span>
+      {% if question.references %}
+        <h2> Réferences : </h2>
+        {% for reference in question.references %}
+          <p>{{ reference|ref_to_html }}</p>
+        {% endfor %}
+      {% endif %}
     </div>
     <!-- Texte aperçu (visible par défaut) -->
     <div id="previewText" class="text-preview">
-      {{ question.description }}
+      <span>{{ question.description|markdown_to_html }}</span>
+      {% if question.references %}
+        <h2> Réferences : </h2>
+        {% for reference in question.references %}
+          <p>{{ reference|ref_to_html }}</p>
+        {% endfor %}
+      {% endif %}
     </div>
     <!-- Bouton pour basculer entre l'aperçu et le texte complet -->
     <button class="btn btn-link mt-2 p-0" id="toggleButton">
       Lire plus...
     </button>
   </div>
-
-
 
 
 </div>
@@ -170,25 +184,25 @@
 
 </style>
 
-    <script>
-        // Ajout de JavaScript pour basculer entre les états
-        const toggleButton = document.getElementById("toggleButton");
-        const previewText = document.getElementById("previewText");
-        const collapseText = document.getElementById("collapseText");
+<script>
+    // Ajout de JavaScript pour basculer entre les états
+    const toggleButton = document.getElementById("toggleButton");
+    const previewText = document.getElementById("previewText");
+    const collapseText = document.getElementById("collapseText");
 
-        toggleButton.addEventListener("click", () => {
-            // Si le texte complet est visible, le cacher
-            if (collapseText.classList.contains("show")) {
-                collapseText.classList.remove("show");
-                previewText.style.display = "-webkit-box"; // Réaffiche l'aperçu
-                toggleButton.innerText = "Lire plus";
-            } else {
-                collapseText.classList.add("show");
-                previewText.style.display = "none"; // Masque l'aperçu
-                toggleButton.innerText = "Lire moins";
-            }
-        });
-    </script>
+    toggleButton.addEventListener("click", () => {
+        // Si le texte complet est visible, le cacher
+        if (collapseText.classList.contains("show")) {
+            collapseText.classList.remove("show");
+            previewText.style.display = "-webkit-box"; // Réaffiche l'aperçu
+            toggleButton.innerText = "Lire plus";
+        } else {
+            collapseText.classList.add("show");
+            previewText.style.display = "none"; // Masque l'aperçu
+            toggleButton.innerText = "Lire moins";
+        }
+    });
+</script>
 
 <script data-question="{{ json_question }}">
     const data = document.currentScript.dataset;
@@ -202,12 +216,14 @@
             button.style.display = 'inline-block';
         });
     }
+
     function dislpayLongExplanation() {
         const collapseButtons = document.querySelectorAll('.long-explanation');
         collapseButtons.forEach(button => {
             button.classList.add('visible');
         });
     }
+
     function validateAnswers() {
         const form = document.getElementById('question-form');
         const selectedOptions = Array.from(form.elements['option'])

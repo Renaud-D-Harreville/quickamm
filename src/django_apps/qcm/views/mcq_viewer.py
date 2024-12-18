@@ -2,46 +2,40 @@ import json
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
-from qa.mcq_db.models import MCQData  # Assurez-vous que MCQData est bien accessible depuis ce fichier.
+from qa.mcq_db.models import MCQData
 
 from django import forms
 
 
 class MCQCreatorForm(forms.Form):
-    json_input = forms.CharField(
-        label="JSON de la question",
-        widget=forms.Textarea(attrs={'rows': 20, 'class': 'form-control'}),
-        help_text="Entrez le JSON correspondant à un objet MCQData."
-    )
+    json_input = forms.JSONField()
 
 
 class MCQModelViewer(View):
     template_name = 'qcm/mcq-viewer.html'
 
     def get(self, request):
-        """
-        Affichage de la page avec un formulaire vide.
-        """
-        return render(request, self.template_name, context={"json_input": None, "question": None})
+        form = MCQCreatorForm()  # Initialisation d'un formulaire vide
+        context = {"form": form, "json_input": None, "question": None}
+        return render(request, self.template_name, context=context)
 
     def post(self, request):
         """
-        Validation du JSON soumis. Si le JSON est valide, il est transformé en un objet MCQData.
-        Sinon, un message d'erreur est affiché.
+        Validation du JSON soumis via le formulaire MCQCreatorForm.
+        Affiche les erreurs de validation si le JSON est invalide.
         """
-        json_input = request.POST.get("json_input", "").strip()
-        context = {"json_input": json_input, "question": None}
+        form = MCQCreatorForm(request.POST)
+        context = {"form": form, "question": None}
 
-        # Validation et conversion du JSON.
-        if json_input:
+        if form.is_valid():
             try:
-                data = json.loads(json_input)
+                data = form.cleaned_data["json_input"]
                 # Conversion du dictionnaire JSON en un objet MCQData.
                 question = MCQData(**data)
                 context["question"] = question
                 json_question = question.model_dump_json()
                 context["json_question"] = json_question
-            except (json.JSONDecodeError, TypeError, ValueError) as e:
-                context["error"] = f"Erreur de validation du JSON : {str(e)}"
+            except (TypeError, ValueError) as e:
+                form.add_error("json_input", f"Erreur de validation des données : {str(e)}")
 
         return render(request, self.template_name, context)

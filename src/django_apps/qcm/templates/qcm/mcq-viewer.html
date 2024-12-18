@@ -5,12 +5,12 @@
     <div class="row">
         <!-- Colonne gauche - Formulaire JSON -->
         <div class="col-md-6">
-            <h3>Créer une question MCQ</h3>
+            <h3>Visualiser une question MCQ</h3>
             <form method="POST" action="">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="json_input" class="form-label">JSON de la question</label>
-                    <textarea id="json_input" name="json_input" class="form-control" rows="20">{{ json_input|default_if_none:'' }}</textarea>
+                    {{ form.json_input.label_tag }}
+                    {{ form.json_input }}
                 </div>
                 <button type="submit" class="btn btn-primary">Valider</button>
             </form>

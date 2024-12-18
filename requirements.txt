@@ -1,5 +1,4 @@
 pydantic
-# pillow
-# opencv-python
+markdown
 django
 numpy

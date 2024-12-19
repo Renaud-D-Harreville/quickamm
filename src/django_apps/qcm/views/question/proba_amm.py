@@ -1,4 +1,4 @@
-from .base_view import AbstractQuestionView, all_questions_factory
+from .base_view import AbstractQuestionView
 
 class QuestionView(AbstractQuestionView):
 
@@ -6,4 +6,4 @@ class QuestionView(AbstractQuestionView):
         return "AMM"
 
     def get_topic_list(self) -> list[str]:
-        return all_questions_factory.topics
+        return ["AMM"]

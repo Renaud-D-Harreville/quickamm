@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views import View
-from qa.api.mcq_factories import AllQuestionsFactory
 from django_apps.qcm.forms import QCMForm, TopicForm
 from django_apps.qcm.requests_facades import IndexPostRequestFacade
 from qa.mcq_db.models import MCQData
+from qa.api.api import get_random_question_from_topics
 import abc
 
-all_questions_factory: AllQuestionsFactory = AllQuestionsFactory()
+
 
 class AbstractQuestionView(View, abc.ABC):
     template_name = 'qcm/question/index.html'
@@ -40,7 +40,7 @@ class AbstractQuestionView(View, abc.ABC):
         topics = dict(request.GET.lists())["topic_list"] \
             if "topic_list" in request.GET else [self.get_default_topic()]
         seed = self.get_seed()
-        question = all_questions_factory.get_random_question_from_topics(topics, seed)
+        question = get_random_question_from_topics(topics, seed)
         form = self._get_form_from_question(question)
         json_question = question.model_dump_json()
         context_dict = {

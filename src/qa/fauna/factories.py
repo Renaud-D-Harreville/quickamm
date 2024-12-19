@@ -12,15 +12,20 @@ class AnimalsMCQFactory(AbstractMCQFactory):
     def __init__(self, animals: Animals):
         self.animals: Animals = animals
 
-    @property
-    def topics(self):
-        return self.TOPICS
+    def get_questions_with_topics(self, topics: list[str]) -> list[Animal]:
+        if all([topic in self.TOPICS for topic in topics]):
+            return self.animals.animals
+        return list()
 
-    def _topic_weight(self, topic: str) -> int:
-        return len(self.animals.animals)
-
-    def related_topics(self, surrounding_mcq_object: Animal) -> list[str]:
-        return self.TOPICS
+    # @property
+    # def topics(self):
+    #     return self.TOPICS
+    #
+    # def _topic_weight(self, topic: str) -> int:
+    #     return len(self.animals.animals)
+    #
+    # def related_topics(self, surrounding_mcq_object: Animal) -> list[str]:
+    #     return self.TOPICS
 
     def get_question(self, surrounding_mcq_object: Animal) -> str:
         question = "Quel est le nom de cet animal ?"
@@ -31,8 +36,8 @@ class AnimalsMCQFactory(AbstractMCQFactory):
         animal_picture_path = f"qcm/fauna/{animal_picture_name}"
         return animal_picture_path
 
-    def get_random_surrounding_question_object(self, topic: str) -> Animal:
-        return random.choice(self.animals.animals)
+    # def get_random_surrounding_question_object(self, topic: str) -> Animal:
+    #     return random.choice(self.animals.animals)
 
     def _to_mcq_answer(self, animal: Animal, is_true: bool) -> MCQAnswer:
         mcq_answer = MCQAnswer(
@@ -59,7 +64,7 @@ class AnimalsMCQFactory(AbstractMCQFactory):
     def get_explanation(self, surrounding_mcq_object: Animal) -> str | None:
         return surrounding_mcq_object.description
 
-    def get_all_surrounding_objects(self, topic: str) -> list[Animal]:
-        if self.is_under_topic(topic) is False:
-            raise ValueError(f"Topic {topic} not in {self.TOPICS}")
-        return self.animals.animals
+    # def get_all_surrounding_objects(self, topic: str) -> list[Animal]:
+    #     if self.is_under_topic(topic) is False:
+    #         raise ValueError(f"Topic {topic} not in {self.TOPICS}")
+    #     return self.animals.animals

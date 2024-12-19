@@ -5,6 +5,9 @@ from pydantic import BaseModel
 from pydantic import HttpUrl
 import random
 
+from typing import Any
+
+
 class AbstractReference(BaseModel, abc.ABC):
     reference_type: str
 
@@ -43,6 +46,7 @@ class MCQData(BaseModel):
     answers: list[MCQAnswer]
     description: str | None = None
     references: list[URLReference | TextReference] | None = None
+    metadata: dict[str, Any] | None = None
 
     @property
     def correct_answers(self) -> list[MCQAnswer]:
@@ -63,16 +67,13 @@ class MCQData(BaseModel):
 class MCQModelsDB(BaseModel):
     mcq_models: list[MCQData]
 
-    # TODO: improve that function
-    def get_questions_with_topic(self, topics: list[str] = None) -> list[MCQData]:
+    def get_questions_with_topics(self, topics: list[str] = None) -> list[MCQData]:
         if not topics:
             return self.mcq_models
         l = list()
         for question in self.mcq_models:
-            for topic in topics:
-                if question.is_under_topic(topic):
-                    l.append(question)
-                    break
+            if all([topic in question.topics for topic in topics]):
+                l.append(question)
         return l
 
     def get_random_question(self, topics: list[str] = None) -> MCQData:
@@ -80,7 +81,6 @@ class MCQModelsDB(BaseModel):
         random_mcq_model = random.choice(working_mcq_models)
         return random_mcq_model
 
-    # TODO: To improve !
     def get_topic_list(self) -> list[str]:
         l = list()
         for question in self.mcq_models:

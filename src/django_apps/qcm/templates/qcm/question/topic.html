@@ -3,7 +3,27 @@
     {% csrf_token %}
     <div class="multiselect">
       <h2>Choisis ton thème</h2>
-      {{ topic_form }}
+      <div class="option container text-center">
+        {% for option in topic_form %}
+          <div class="row">
+            <div class="col-10">
+              <div class="topic-button">
+                <input type="radio" name="{{ option.name }}" value="{{ option.value }}" id="{{ option.label_id }}" {% if option.checked %}checked{% endif %}>
+                <label for="{{ option.label_id }}">{{ option.label }} </label>
+              </div>
+            </div>
+            {%  if option.has_sub_themes %}
+              <div class="col-2">
+                  <form action="{% url 'index' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="identifier" value="{{ radio.data.value }}">
+                    <input type="submit" value="▾" class="mx-auto d-block">
+                  </form>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
     </div>
   </form>
 

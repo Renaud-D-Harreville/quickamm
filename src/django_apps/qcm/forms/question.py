@@ -2,6 +2,8 @@ from django import forms
 from django.forms.widgets import CheckboxSelectMultiple, RadioSelect
 from django.utils.safestring import mark_safe
 
+from qa.topics.themes import Theme
+
 
 class MCQCheckboxSelectMultiple(CheckboxSelectMultiple):
 
@@ -53,4 +55,21 @@ class QCMForm(forms.Form):
 
 
 class TopicForm(forms.Form):
-    topic_list = forms.ChoiceField(widget=TopicRadioSelect, label="", )
+    topic_list = forms.ChoiceField(widget=TopicRadioSelect, label="", required=False)
+
+    def _get_choices_from_theme(self, theme: Theme) -> list[tuple[str, str]]:
+        main_theme_choice = (theme.identifier, theme.name)
+        if theme.sub_themes is None:
+            return [main_theme_choice]
+        sub_themes_choices = [(sub_theme.identifier, f" > {sub_theme.name}")
+                              for _, sub_theme in theme.sub_themes.items()]
+        return [main_theme_choice] + sub_themes_choices
+
+    def set_topic_choices(self, theme: Theme, initial: str = None):
+        if initial is None:
+            initial = theme.identifier
+
+        choices = self._get_choices_from_theme(theme)
+        # Set the choices for the form field
+        self.fields['topic_list'].choices = choices
+        self.fields['topic_list'].initial = initial

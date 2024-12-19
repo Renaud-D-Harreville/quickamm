@@ -16,16 +16,6 @@ class FlowersMCQFactory(AbstractMCQFactory):
             return self.flowers.flowers
         return list()
 
-    # @property
-    # def topics(self):
-    #     return self.TOPICS
-    #
-    # def _topic_weight(self, topic: str) -> int:
-    #     return len(self.flowers.flowers)
-    #
-    # def related_topics(self, surrounding_mcq_object: Flower) -> list[str]:
-    #     return self.TOPICS
-
     def get_question(self, surrounding_mcq_object: Flower) -> str:
         question = "Quel est le nom de cette plante ?"
         return question
@@ -34,9 +24,6 @@ class FlowersMCQFactory(AbstractMCQFactory):
         flower_picture_name = random.choice(surrounding_mcq_object.images_name)
         flower_picture_path = f"qcm/flora/{flower_picture_name}"
         return flower_picture_path
-
-    # def get_random_surrounding_question_object(self, topic: str) -> Flowers:
-    #     return random.choice(self.flowers.flowers)
 
     @staticmethod
     def _to_mcq_answer(flower: Flower, is_true: bool) -> MCQAnswer:
@@ -63,8 +50,3 @@ class FlowersMCQFactory(AbstractMCQFactory):
 
     def get_explanation(self, surrounding_mcq_object: Flower) -> str | None:
         return surrounding_mcq_object.description
-
-    # def get_all_surrounding_objects(self, topic: str) -> list[Flower]:
-    #     if self.is_under_topic(topic) is False:
-    #         raise ValueError(f"Topic {topic} not in {self.TOPICS}")
-    #     return self.flowers.flowers

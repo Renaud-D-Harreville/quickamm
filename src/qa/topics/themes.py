@@ -10,20 +10,20 @@ class Theme(BaseModel):
     name: str  # Would be used on the form
     description: str
     needed_topics: list[str]
-    _id_path: list[str] = None
+    id_path: list[str] = None
     sub_themes: dict[str, "Theme"] | None = None
 
     def model_post_init(self, __context):
-        if self._id_path is None:
+        if self.id_path is None:
             self._set_id_path()
 
     def _set_id_path(self, parent_path: list[str] = None):
         if parent_path is None:
             parent_path = []
-        self._id_path = parent_path + [self.identifier]
+        self.id_path = parent_path + [self.identifier]
         if self.sub_themes:
             for _, sub_theme in self.sub_themes.items():
-                sub_theme._set_id_path(self._id_path)
+                sub_theme._set_id_path(self.id_path)
 
     def is_valid(self, topics: list[str], meta_data: dict[str, Any]):
         # At least one constraint should be true

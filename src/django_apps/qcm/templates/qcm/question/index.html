@@ -5,7 +5,7 @@
     <div class="row">
       <form action="{% url 'index' %}" method="get" id="get_new_question_form">
         {% csrf_token %}
-        <input type="hidden" name="topic_list" id="hidden_topic">
+        <input type="hidden" name="identifier" id="hidden_identifier">
         <input type="submit" value="Nouvelle question" class="mx-auto d-block">
       </form>
     </div>
@@ -56,7 +56,7 @@
     // Vérifie qu'une option est bien sélectionnée
     if (selectedOption) {
       // Ajoute la valeur dans le champ caché
-      document.getElementById('hidden_topic').value = selectedOption;
+      document.getElementById('hidden_identifier').value = selectedOption;
 
       // Soumet à nouveau le formulaire après injection de la valeur
       event.target.submit();

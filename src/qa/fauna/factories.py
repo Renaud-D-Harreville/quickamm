@@ -17,16 +17,6 @@ class AnimalsMCQFactory(AbstractMCQFactory):
             return self.animals.animals
         return list()
 
-    # @property
-    # def topics(self):
-    #     return self.TOPICS
-    #
-    # def _topic_weight(self, topic: str) -> int:
-    #     return len(self.animals.animals)
-    #
-    # def related_topics(self, surrounding_mcq_object: Animal) -> list[str]:
-    #     return self.TOPICS
-
     def get_question(self, surrounding_mcq_object: Animal) -> str:
         question = "Quel est le nom de cet animal ?"
         return question
@@ -35,9 +25,6 @@ class AnimalsMCQFactory(AbstractMCQFactory):
         animal_picture_name = random.choice(surrounding_mcq_object.images_name)
         animal_picture_path = f"qcm/fauna/{animal_picture_name}"
         return animal_picture_path
-
-    # def get_random_surrounding_question_object(self, topic: str) -> Animal:
-    #     return random.choice(self.animals.animals)
 
     def _to_mcq_answer(self, animal: Animal, is_true: bool) -> MCQAnswer:
         mcq_answer = MCQAnswer(
@@ -63,8 +50,3 @@ class AnimalsMCQFactory(AbstractMCQFactory):
 
     def get_explanation(self, surrounding_mcq_object: Animal) -> str | None:
         return surrounding_mcq_object.description
-
-    # def get_all_surrounding_objects(self, topic: str) -> list[Animal]:
-    #     if self.is_under_topic(topic) is False:
-    #         raise ValueError(f"Topic {topic} not in {self.TOPICS}")
-    #     return self.animals.animals

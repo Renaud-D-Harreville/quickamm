@@ -7,7 +7,7 @@ from qa.fauna.models import Animal, Animals
 
 class AnimalsMCQFactory(AbstractMCQFactory):
 
-    TOPICS = ["AMM", "AMM/Fauna"]
+    TOPICS = ["AMM", "Probatoire AMM", "Fauna"]
 
     def __init__(self, animals: Animals):
         self.animals: Animals = animals

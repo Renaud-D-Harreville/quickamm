@@ -3,9 +3,8 @@ from django.views import View
 from django_apps.qcm.forms import QCMForm, TopicForm
 from django_apps.qcm.requests_facades import IndexPostRequestFacade
 from qa.mcq_db.models import MCQData
-from qa.api.api import get_random_question_from_topics
+from qa.api import api
 import abc
-
 
 
 class AbstractQuestionView(View, abc.ABC):
@@ -40,7 +39,7 @@ class AbstractQuestionView(View, abc.ABC):
         topics = dict(request.GET.lists())["topic_list"] \
             if "topic_list" in request.GET else [self.get_default_topic()]
         seed = self.get_seed()
-        question = get_random_question_from_topics(topics, seed)
+        question = api.get_random_question_from_topics(topics, seed)
         form = self._get_form_from_question(question)
         json_question = question.model_dump_json()
         context_dict = {
@@ -52,23 +51,23 @@ class AbstractQuestionView(View, abc.ABC):
         }
         return render(request, self.template_name, context_dict)
 
-    def post(self, request):
-        topics = dict(request.POST.lists())["topic_list"] \
-            if "topic_list" in request.POST else [self.get_default_topic()]
-        req_facade = IndexPostRequestFacade(request)
-        question = req_facade.mcq
-
-        context_dict = {
-            "question": question,
-            'form': self._get_form_from_question(question),
-            "topic_form": self._get_topic_form(),
-            'small_response': req_facade.get_small_response(),
-            "complete_response": [1 + index for index in question.correct_indexes],
-            "explanation": question.answer_description,
-            # "correction_link": question.correction_link
-            "topic_list": topics
-        }
-        return render(request, self.template_name, context_dict)
+    # def post(self, request):
+    #     topics = dict(request.POST.lists())["topic_list"] \
+    #         if "topic_list" in request.POST else [self.get_default_topic()]
+    #     req_facade = IndexPostRequestFacade(request)
+    #     question = req_facade.mcq
+    #
+    #     context_dict = {
+    #         "question": question,
+    #         'form': self._get_form_from_question(question),
+    #         "topic_form": self._get_topic_form(),
+    #         'small_response': req_facade.get_small_response(),
+    #         "complete_response": [1 + index for index in question.correct_indexes],
+    #         "explanation": question.answer_description,
+    #         # "correction_link": question.correction_link
+    #         "topic_list": topics
+    #     }
+    #     return render(request, self.template_name, context_dict)
 
 
 

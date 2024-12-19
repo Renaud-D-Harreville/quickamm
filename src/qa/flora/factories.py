@@ -6,7 +6,7 @@ import random
 
 
 class FlowersMCQFactory(AbstractMCQFactory):
-    TOPICS = ["AMM", "AMM/Flora"]
+    TOPICS = ["AMM", "Probatoire AMM", "Flora"]
 
     def __init__(self, flowers: Flowers):
         self.flowers: Flowers = flowers

@@ -1,12 +1,12 @@
 from.base_view import AbstractQuestionView
 from datetime import date
+from qa.api import api
 
 
 class DailyQuestionView(AbstractQuestionView):
     template_name = 'qcm/home-page.html'
-    TOPICS = ["AMM", "AMM/Fauna", "AMM/Flora", "AMM/Toponymie", "AMM/Le milieu montagnard",
-              "AMM/La profession d’AMM, son environnement géographique, institutionnel et réglementaire",
-              "AMM/Milieu montagnard enneigé", "AMM/Milieu montagnard tropical et équatorial"]
+
+    DEFAULT_THEME = api.get_theme_from_path(["Probatoire AMM"])
 
     def get_seed(self) -> str | int | float | None:
         today = date.today()

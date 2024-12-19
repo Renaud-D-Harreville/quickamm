@@ -8,7 +8,7 @@ from abc import ABC
 
 
 class BaseToponymyMCQFactory(AbstractMCQFactory, ABC):
-    TOPICS = ["AMM", "AMM/Toponymie", "Toponymie"]
+    TOPICS = ["AMM", "Probatoire AMM", "Toponymie"]
 
     def __init__(self, toponymy: ToponymyList):
         self.toponymy: ToponymyList = toponymy
@@ -59,7 +59,7 @@ class BaseToponymyMCQFactory(AbstractMCQFactory, ABC):
 
 
 class ToponymyToWordMCQFactory(BaseToponymyMCQFactory):
-    TOPICS = ["AMM", "AMM/Toponymie/Toponyme vers traduction"]
+    TOPICS = BaseToponymyMCQFactory.TOPICS + ["Toponyme vers traduction"]
 
     def get_question(self, surrounding_mcq_object: ToponymyWord) -> str:
         question = f"Que signifient ces mots : {surrounding_mcq_object.get_words()}"
@@ -75,7 +75,7 @@ class ToponymyToWordMCQFactory(BaseToponymyMCQFactory):
 
 
 class WordToToponymyMCQFactory(BaseToponymyMCQFactory):
-    TOPICS = ["AMM", "AMM/Toponymie/Traduction vers toponyme"]
+    TOPICS = BaseToponymyMCQFactory.TOPICS + ["Traduction vers toponyme"]
 
 
     def get_question(self, surrounding_mcq_object: ToponymyWord) -> str:

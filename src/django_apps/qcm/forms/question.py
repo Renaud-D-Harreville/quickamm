@@ -33,7 +33,7 @@ class TopicRadioSelect(RadioSelect):
             value = self.choices[0][0]
         output = []
         for i, (option_value, option_label) in enumerate(self.choices):
-            checked = ' checked' if option_value == value[0] else ''
+            checked = ' checked' if option_value == value else ''
             space_label = self.get_space_label(option_label)
 
             input_id = f"{name}_{i}"

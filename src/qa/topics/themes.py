@@ -29,6 +29,15 @@ class Theme(BaseModel):
         # At least one constraint should be true
         return any(constraint.is_valid(topics, meta_data) for constraint in self.constraints)
 
+    def get_topics_from_identifier(self, identifier: str = None):
+        if identifier is None:
+            return self.needed_topics
+        if self.identifier == identifier:
+            return self.needed_topics
+        if identifier in self.sub_themes.keys():
+            return self.sub_themes[identifier].needed_topics
+        return self.needed_topics
+
 
 class Themes(BaseModel):
     themes: dict[str, Theme]

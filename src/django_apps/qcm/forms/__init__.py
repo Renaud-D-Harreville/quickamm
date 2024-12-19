@@ -1,2 +1,2 @@
-from .question import QCMForm, TopicForm
+from .question import QCMForm
 from .report import ReportForm

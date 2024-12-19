@@ -1,8 +1,5 @@
 from django import forms
-from django.forms.widgets import CheckboxSelectMultiple, RadioSelect
-from django.utils.safestring import mark_safe
-
-from qa.topics.themes import Theme
+from django.forms.widgets import CheckboxSelectMultiple
 
 
 class MCQCheckboxSelectMultiple(CheckboxSelectMultiple):
@@ -21,55 +18,9 @@ class MCQCheckboxSelectMultiple(CheckboxSelectMultiple):
         return mark_safe('\n'.join(output))
 
 
-class TopicRadioSelect(RadioSelect):
-
-    def get_space_label(self, label: str) -> str:
-        split_label = label.split("/")
-        nb_space = (len(split_label) -1) * 1
-        spaces = "> " * nb_space
-        space_label = f"{spaces}{split_label[-1]}"
-        return space_label
-
-    def render(self, name, value, attrs=None, renderer=None):
-        if value is None or len(value) == 0:
-            value = self.choices[0][0]
-        output = []
-        for i, (option_value, option_label) in enumerate(self.choices):
-            checked = ' checked' if option_value == value else ''
-            space_label = self.get_space_label(option_label)
-
-            input_id = f"{name}_{i}"
-            field_str = f"""
-            <div class="topic-button">
-                <input type="radio" name="{name}" value="{option_value}" id="{input_id}"{checked}> 
-                <label for="{input_id}">{space_label}</label>
-            </div>
-            """
-            output.append(field_str)
-        return mark_safe('\n'.join(output))
-
-
 class QCMForm(forms.Form):
     question = forms.JSONField(widget=forms.HiddenInput)
     text_answers = forms.MultipleChoiceField(widget=MCQCheckboxSelectMultiple, label="")
 
 
-class TopicForm(forms.Form):
-    topic_list = forms.ChoiceField(widget=TopicRadioSelect, label="", required=False)
 
-    def _get_choices_from_theme(self, theme: Theme) -> list[tuple[str, str]]:
-        main_theme_choice = (theme.identifier, theme.name)
-        if theme.sub_themes is None:
-            return [main_theme_choice]
-        sub_themes_choices = [(sub_theme.identifier, f" > {sub_theme.name}")
-                              for _, sub_theme in theme.sub_themes.items()]
-        return [main_theme_choice] + sub_themes_choices
-
-    def set_topic_choices(self, theme: Theme, initial: str = None):
-        if initial is None:
-            initial = theme.identifier
-
-        choices = self._get_choices_from_theme(theme)
-        # Set the choices for the form field
-        self.fields['topic_list'].choices = choices
-        self.fields['topic_list'].initial = initial

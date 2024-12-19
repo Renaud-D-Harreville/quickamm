@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django_apps.qcm.forms import QCMForm, TopicForm
+from django_apps.qcm.forms import QCMForm
 from qa.mcq_db.models import MCQData
 from qa.api import api
 from pydantic import BaseModel
@@ -43,21 +43,6 @@ class ThemeQuestionView(View):
         form.fields['text_answers'].choices = [(index, answer) for index, answer in
                                                enumerate(question.answers)]
         return form
-
-    # def _get_choices_from_theme(self, theme: Theme) -> list[tuple[str, str, dict]]:
-    #     main_theme_choice = (theme.identifier, theme.name, {'has_sub_themes': True})
-    #     if theme.sub_themes is None:
-    #         return [main_theme_choice]
-    #     sub_themes_choices = [(sub_theme.identifier, f" > {sub_theme.name}", {'has_sub_themes': theme.sub_themes is not None})
-    #                           for _, sub_theme in theme.sub_themes.items()]
-    #     return [main_theme_choice] + sub_themes_choices
-    #
-    # def _get_topic_form(self, theme: Theme, initial: str = None) -> TopicForm:
-    #     if initial is None:
-    #         initial = theme.identifier
-    #     form = TopicForm()
-    #     form.set_topic_choices(theme, initial)
-    #     return form
 
     def _get_topic_form_information(self, theme: Theme, initial: str, index: int) -> TopicFormInformation:
         name = 'topic_list'

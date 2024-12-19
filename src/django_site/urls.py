@@ -5,7 +5,6 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.ThemeQuestionView.as_view(), name='index'),
-    path('daily', views.DailyQuestionView.as_view(), name='daily'),
     path('report', views.ReportView.as_view(), name='report'),
     path('questionsdb', views.MCQModelView.as_view(), name="question_db_viewer"),
     path('admin/', admin.site.urls),

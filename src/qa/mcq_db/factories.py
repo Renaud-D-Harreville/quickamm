@@ -1,5 +1,5 @@
-from qa.mcq_db.models import MCQData, MCQAnswer, MCQModelsDB
-from qa.api.base_factory import AbstractMCQFactory, SurroundingMCQObjectClass
+from qa.mcq_db.models import MCQData, MCQAnswer, MCQModelsDB, Reference
+from qa.common.base_factory import AbstractMCQFactory, SurroundingMCQObjectClass
 from pathlib import Path
 
 
@@ -22,3 +22,6 @@ class MCQDBMCQFactory(AbstractMCQFactory):
 
     def get_explanation(self, surrounding_mcq_object: MCQData) -> str | None:
         return surrounding_mcq_object.description
+
+    def get_references(self, surrounding_mcq_object: MCQData) -> list[Reference] | None:
+        return surrounding_mcq_object.references

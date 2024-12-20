@@ -17,6 +17,7 @@
         {% include 'qcm/question/topic.html' %}
       </div>
     </div>
+    {% comment %}
     <div class="row g-10 w-100 " id="question-index">
       <form action="{% url 'report' %}" method="get">
         {% csrf_token %}
@@ -24,47 +25,43 @@
         <input type="submit" formtarget="_blank" value="Signaler une erreur sur la question">
       </form>
     </div>
+    {% endcomment %}
 
   </div>
-    <style>
-        #questionBox {
-        }
-    
-        #formBox {
-        }
-    
-        @media (max-width: 320px) {
-            .element {
-                width: 90%;
-            }
-        }
-        #question-index .section {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadowwdth: 100%;
-            border-radius: 8px;
-        }
-    </style>
+  <style>
+      #questionBox {
+      }
+
+      #formBox {
+      }
+
+      @media (max-width: 320px) {
+          .element {
+              width: 90%;
+          }
+      }
+
+  </style>
   <script>
-  document.getElementById('get_new_question_form').addEventListener('submit', function(event) {
-    // Empêche temporairement la soumission pour injecter la donnée
-    event.preventDefault();
+      document.getElementById('get_new_question_form').addEventListener('submit', function (event) {
+          // Empêche temporairement la soumission pour injecter la donnée
+          event.preventDefault();
 
-    // Récupère la valeur du bouton radio sélectionné
-    const selectedOption = document.querySelector('input[name="topic_list"]:checked')?.value;
+          // Récupère la valeur du bouton radio sélectionné
+          const selectedOption = document.querySelector('input[name="topic_list"]:checked')?.value;
 
-    // Vérifie qu'une option est bien sélectionnée
-    if (selectedOption) {
-      // Ajoute la valeur dans le champ caché
-      document.getElementById('hidden_identifier').value = selectedOption;
+          // Vérifie qu'une option est bien sélectionnée
+          if (selectedOption) {
+              // Ajoute la valeur dans le champ caché
+              document.getElementById('hidden_identifier').value = selectedOption;
 
-      // Soumet à nouveau le formulaire après injection de la valeur
-      event.target.submit();
-    } else {
-      // Optionnel : alerte si aucun bouton radio n'est sélectionné
-      alert("Veuillez sélectionner une option avant de soumettre le formulaire.");
-    }
-  });
-</script>
-{%  endblock %}
+              // Soumet à nouveau le formulaire après injection de la valeur
+              event.target.submit();
+          } else {
+              // Optionnel : alerte si aucun bouton radio n'est sélectionné
+              alert("Veuillez sélectionner une option avant de soumettre le formulaire.");
+          }
+      });
+  </script>
+{% endblock %}
 

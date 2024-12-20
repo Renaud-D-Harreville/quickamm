@@ -2,12 +2,12 @@ from abc import abstractmethod
 
 from qa.toponymy.models import ToponymyWord, ToponymyList
 from qa.mcq_db.models import MCQAnswer
-from qa.api.base_factory import AbstractMCQFactory
+from qa.common.base_factory import AbstractMCQFactory
 from abc import ABC
 
 
 class BaseToponymyMCQFactory(AbstractMCQFactory, ABC):
-    TOPICS = ["AMM", "Probatoire AMM", "Toponymie"]
+    TOPICS = ["AMM", "Probatoire AMM", "Le milieu montagnard", "Toponymie"]
 
     def __init__(self, toponymy: ToponymyList):
         self.toponymy: ToponymyList = toponymy

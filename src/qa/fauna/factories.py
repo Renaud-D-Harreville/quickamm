@@ -1,4 +1,4 @@
-from qa.api.base_factory import AbstractMCQFactory
+from qa.common.base_factory import AbstractMCQFactory
 from pathlib import Path
 import random
 from qa.mcq_db.models import MCQAnswer

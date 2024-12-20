@@ -16,3 +16,20 @@ __pycache__/
 *.egg
 
 .venv
+*.env
+
+# Cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# Dossiers médias générés par vos utilisateurs
+media/
+
+# Fichiers statiques collectés pour la production
+staticfiles/
+/src/django_site/settings/production.py
+/src/django_site/settings/development.py

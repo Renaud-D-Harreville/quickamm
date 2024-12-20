@@ -4,15 +4,5 @@ services:
     build: .
     container_name: quick-amm
     restart: always
-    environment:
-      - VIRTUAL_HOST=quickamm.renauddha.ovh
-      - LETSENCRYPT_HOST=quickamm.renauddha.ovh
-      - LETSENCRYPT_EMAIL=r.dharreville@gmail.com
-    networks:
-      - reverse-proxy
-
-networks:
-  reverse-proxy:
-    external:
-      name: https-reverse-proxy
+    env_file: .env
  

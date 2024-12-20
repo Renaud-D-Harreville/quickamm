@@ -1,6 +1,4 @@
 <div id="question-topic">
-  <form action="{% url 'index' %}" method="get">
-    {% csrf_token %}
     <div class="multiselect">
       <h2>Choisis ton thème</h2>
       <div class="option container text-center">
@@ -16,7 +14,7 @@
               <div class="col-2">
                   <form action="{% url 'index' %}" method="post">
                     {% csrf_token %}
-                    <input type="hidden" name="identifier" value="{{ radio.data.value }}">
+                    <input type="hidden" name="identifier" value="{{ option.value }}">
                     <input type="submit" value="▾" class="mx-auto d-block">
                   </form>
               </div>
@@ -25,9 +23,6 @@
         {% endfor %}
       </div>
     </div>
-  </form>
-
-
 </div>
 
 <style>

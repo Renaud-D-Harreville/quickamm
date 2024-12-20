@@ -36,6 +36,7 @@ class MCQBuilder:
 
     def build_mcq(self) -> MCQData:
         if not self.is_data_ok():
+            return self.base_data
             raise Exception("Cannot build MCQ. Data is not valid")
         true_answers = list(np.random.choice(self.base_data.correct_answers, size=self.nb_correct_answers, replace=False))
         wrong_answers = list(np.random.choice(self.base_data.wrong_answers, size=self.nb_wrong_answers, replace=False))
@@ -46,6 +47,7 @@ class MCQBuilder:
             question=self.base_data.question,
             image_path=self.base_data.image_path,
             answers=answer_list,
-            description=self.base_data.description
+            description=self.base_data.description,
+            references=self.base_data.references
         )
 

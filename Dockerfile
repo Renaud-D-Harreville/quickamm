@@ -9,6 +9,10 @@ COPY . code
 WORKDIR /code
 RUN pip3 install -e .
 
+RUN python manage.py migrate
+
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 80
 
 # runs the production server

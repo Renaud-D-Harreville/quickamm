@@ -23,7 +23,8 @@ class ThemeQuestionView(View):
         if 'current_theme' not in request.session:
             current_theme = self.DEFAULT_THEME
             request.session['current_theme'] = current_theme.model_dump()
-            request.session.modified = True  # Indiquer que la session a été modifiée
+            # request.session.modified = True  # Indiquer que la session a été modifiée
+            print("Cannot find 'current_theme' in session, set to default")
 
         dict_theme = request.session['current_theme']
         theme = Theme(**dict_theme)
@@ -31,7 +32,7 @@ class ThemeQuestionView(View):
 
     def _set_current_theme(self, request, theme: Theme):
         request.session['current_theme'] = theme.model_dump()
-        request.session.modified = True  # Indiquer que la session a été modifiée
+        # request.session.modified = True  # Indiquer que la session a été modifiée
 
     def get_seed(self) -> str | int | float | None:
         return None

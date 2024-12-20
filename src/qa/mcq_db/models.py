@@ -1,36 +1,7 @@
-import abc
-from abc import ABC, abstractmethod
 
 from pydantic import BaseModel
-from pydantic import HttpUrl
 import random
-
-from typing import Any
-
-
-class AbstractReference(BaseModel, abc.ABC):
-    reference_type: str
-
-    @abstractmethod
-    def to_html(self) -> str:
-        pass
-
-
-class URLReference(AbstractReference):
-    reference_type: str = "url"
-    url: HttpUrl
-    description: str
-
-    def to_html(self) -> str:
-        return f"<a href=\"{self.url}\" target=\"_blank\" rel=\"noopener noreferrer\">{self.description}</a>"
-
-
-class TextReference(AbstractReference):
-    reference_type: str = "text"
-    text: str
-
-    def to_html(self) -> str:
-        return self.text
+from qa.common.models import Reference
 
 
 class MCQAnswer(BaseModel):
@@ -45,8 +16,7 @@ class MCQData(BaseModel):
     image_path: str | None = None
     answers: list[MCQAnswer]
     description: str | None = None
-    references: list[URLReference | TextReference] | None = None
-    metadata: dict[str, Any] | None = None
+    references: list[Reference] | None = None
 
     @property
     def correct_answers(self) -> list[MCQAnswer]:
@@ -55,13 +25,6 @@ class MCQData(BaseModel):
     @property
     def wrong_answers(self) -> list[MCQAnswer]:
         return [answer for answer in self.answers if not answer.is_true]
-
-    def is_under_topic(self, topic: str) -> bool:
-        for t in self.topics:
-            # Search if for example t "AMM/Level2/Level3" starts with input topic "AMM/Level2"
-            if t.startswith(topic):
-                return True
-        return False
 
 
 class MCQModelsDB(BaseModel):

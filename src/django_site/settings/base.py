@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
@@ -20,17 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3$r9k@(qc!je58-q6j+#31x9x744zks_$=e9s-f3o*!cvzok&%'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ["true", "1"]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = [
-    "quickamm.renauddha.ovh",
-    "renauddha.ovh",
-    "0.0.0.0",
-    '127.0.0.1',
-    "localhost"
+    # To be completed for production purpose
 ]
 
 
@@ -134,7 +130,9 @@ STATICFILES_DIRS = []
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.mcq_db.BigAutoField'
+# DEFAULT_AUTO_FIELD = 'django.db.mcq_db.BigAutoField'
 
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 300  # Les sessions expirent après 5 minutes (300 secondes)
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Expire lorsque le navigateur est fermé
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False

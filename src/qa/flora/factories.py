@@ -1,4 +1,4 @@
-from qa.api.base_factory import AbstractMCQFactory
+from qa.common.base_factory import AbstractMCQFactory
 from qa.mcq_db.models import MCQAnswer
 from qa.flora.models import Flowers, Flower
 from pathlib import Path

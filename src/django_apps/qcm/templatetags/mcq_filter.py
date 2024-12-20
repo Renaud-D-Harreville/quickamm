@@ -1,7 +1,7 @@
 import markdown
 from django import template
 from django.utils.safestring import mark_safe
-from qa.mcq_db.models import AbstractReference
+from qa.mcq_db.models import Reference
 
 register = template.Library()
 
@@ -32,6 +32,6 @@ def markdown_to_html(markdown_text):
     return mark_safe(html)
 
 @register.filter
-def ref_to_html(reference: AbstractReference):
+def ref_to_html(reference: Reference):
     html = reference.to_html()
     return mark_safe(html)

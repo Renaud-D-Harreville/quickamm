@@ -10,6 +10,7 @@
 </head>
 <body>
 {#{{ request.session }}#}
+{% comment %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Navbar w/ text</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -33,24 +34,30 @@
     </span>
   </div>
 </nav>
+{% endcomment %}
 <header>
   <h1>Avez vous déjà vu cette question ?</h1>
   Hmmm, il me semble que les réponses ont changées !
 </header>
-{% block body %}
-  <!-- 
-      !!!! Here is the body section !!!! 
-  -->
-{% endblock %}
+<main>
+  {% block body %}
+    <!--
+        !!!! Here is the body section !!!!
+    -->
+  {% endblock %}
+</main>
 <p></p>
 <p></p>
 <footer>
   © 2023 Quick-AMM
 </footer>
 <style>
-    body {
+    html, body {
         font-family: Arial, sans-serif;
+        height: 100%;
         margin: 0;
+        display: flex;
+        flex-direction: column;
         padding: 0;
         background-color: #f9f9f9;
     }
@@ -61,11 +68,16 @@
         text-align: center;
         padding: 20px 0;
     }
+    /* La section principale occupe tout l'espace disponible */
+    main {
+        flex: 1;
+    }
 
     footer {
         background-color: #333;
         color: #fff;
         text-align: center;
+        padding: 10px 0;
     }
     input[type="submit"] {
     background-color: #f0f0f0;
